@@ -1,12 +1,17 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
     <head>
         <title>ptrpl4 on Github</title>
         <meta charset="utf-8" />
         <meta
+            name="description"
+            content="Personal website of Pyotr Void, Software Engineer"
+        />
+        <meta
             name="viewport"
             content="width=device-width, initial-scale=1, user-scalable=no"
         />
+        <link rel="preload" href="assets/css/main.css" as="style" />
         <link rel="stylesheet" href="assets/css/main.css" />
         <noscript
             ><link rel="stylesheet" href="assets/css/noscript.css"
@@ -24,12 +29,13 @@
                         Software Engineer &nbsp;&bull;&nbsp; Human
                         &nbsp;&bull;&nbsp; Never asked for this
                     </p>
-                    <nav>
+                    <nav aria-label="Social media links">
                         <ul>
                             <li>
                                 <a
                                     href="https://twitter.com/ptrpl4"
                                     class="icon brands fa-twitter"
+                                    aria-label="Twitter"
                                     ><span class="label">Twitter</span></a
                                 >
                             </li>
@@ -37,6 +43,7 @@
                                 <a
                                     href="https://github.com/ptrpl4"
                                     class="icon brands fa-github"
+                                    aria-label="Github"
                                     ><span class="label">Github</span></a
                                 >
                             </li>
@@ -44,26 +51,34 @@
                                 <a
                                     href="mailto:ptrpl4@icloud.com"
                                     class="icon solid fa-envelope"
+                                    aria-label="Email"
                                     ><span class="label">Email</span></a
                                 >
                             </li>
                         </ul>
                     </nav>
                 </header>
-
-                <!-- Footer -->
             </div>
         </div>
-        <script>
+        <script async>
             window.onload = function () {
                 document.body.classList.remove("is-preload");
             };
-            window.ontouchmove = function () {
-                return false;
-            };
-            window.onorientationchange = function () {
-                document.body.scrollTop = 0;
-            };
+
+            let needToPreventDefault = false;
+            document.addEventListener(
+                "touchmove",
+                function (e) {
+                    if (needToPreventDefault) {
+                        e.preventDefault();
+                    }
+                },
+                { passive: false },
+            );
+
+            window.addEventListener("orientationchange", function () {
+                window.scrollTo(0, 0);
+            });
         </script>
     </body>
 </html>
