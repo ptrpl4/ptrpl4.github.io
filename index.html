@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>ptrpl4 on Github</title>
         <meta charset="utf-8" />
+        <title>ptrpl4 on Github</title>
         <meta
             name="description"
             content="Personal website of Pyotr Void, Software Engineer"
@@ -16,7 +16,7 @@
             href="assets/favicons/favicon.svg"
             type="image/svg+xml"
         />
-        <link rel="icon" href="assets/favicons/favicon.ico" sizes="any" />
+        <link rel="icon" href="assets/favicons/favicon.ico" />
         <link
             rel="apple-touch-icon"
             href="assets/favicons/apple-touch-icon.png"
@@ -121,28 +121,26 @@
         </div>
 
         <script>
-            // Remove preload class when content is loaded
             document.addEventListener("DOMContentLoaded", function () {
                 setTimeout(function () {
                     document.body.classList.remove("is-preload");
                 }, 100);
             });
 
-            // Handle touch events on mobile
-            document.addEventListener(
-                "touchmove",
-                function (e) {
-                    if (window.innerHeight === window.outerHeight) {
-                        e.preventDefault();
-                    }
-                },
-                { passive: false },
-            );
+            if ("ontouchstart" in window) {
+                document.addEventListener(
+                    "touchmove",
+                    function (e) {
+                        if (window.innerHeight === window.outerHeight)
+                            e.preventDefault();
+                    },
+                    { passive: false },
+                );
 
-            // Reset scroll on orientation change
-            window.addEventListener("orientationchange", function () {
-                window.scrollTo(0, 0);
-            });
+                window.addEventListener("orientationchange", function () {
+                    window.scrollTo(0, 0);
+                });
+            }
         </script>
     </body>
 </html>
