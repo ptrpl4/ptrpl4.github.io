@@ -1,101 +1,41 @@
-/* Reset styles */
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-embed,
-figure,
-figcaption,
-footer,
-header,
-hgroup,
-menu,
-nav,
-output,
-ruby,
-section,
-summary,
-time,
-mark,
-audio,
-video {
+/* Reset and base styles */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
     border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
 }
 
-/* Define system font variables */
 :root {
     --system-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
         Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
         "Segoe UI Symbol";
+    --text-color: #fff;
+    --bg-color: #348cb2;
+    --animation-duration: 0.2s;
+    --icon-hover-bg: rgba(255, 255, 255, 0.175);
+    --icon-active-bg: rgba(255, 255, 255, 0.35);
 }
 
-/* Base elements */
+html {
+    text-rendering: optimizeSpeed;
+}
+
+body {
+    font-family: var(--system-font);
+    font-size: 15pt;
+    font-weight: 300;
+    line-height: 1.75;
+    letter-spacing: -0.025em;
+    color: var(--text-color);
+    background: #fff;
+    overflow: hidden;
+    -webkit-text-size-adjust: none;
+}
+
+/* Elements */
 article,
 aside,
 details,
@@ -106,13 +46,12 @@ header,
 hgroup,
 menu,
 nav,
-section {
+section,
+img,
+ol,
+ul,
+table {
     display: block;
-}
-
-body {
-    line-height: 1;
-    text-rendering: optimizeSpeed;
 }
 
 ol,
@@ -120,177 +59,92 @@ ul {
     list-style: none;
 }
 
-blockquote,
-q {
-    quotes: none;
-}
-
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-    content: "";
-    content: none;
-}
-
 table {
     border-collapse: collapse;
-    border-spacing: 0;
-}
-
-body {
-    -webkit-text-size-adjust: none;
-}
-
-mark {
-    background-color: transparent;
-    color: inherit;
-}
-
-input::-moz-focus-inner {
-    border: 0;
-    padding: 0;
 }
 
 input,
 select,
 textarea {
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    -ms-appearance: none;
+    font-family: inherit;
     appearance: none;
 }
 
-/* Basic */
-html {
-    box-sizing: border-box;
-}
-
-*,
-*:before,
-*:after {
-    box-sizing: inherit;
-}
-
-body {
-    background: #fff;
-    overflow: hidden;
-}
-
-body.is-preload *,
-body.is-preload *:before,
-body.is-preload *:after {
-    animation: none !important;
-    transition: none !important;
-}
-
-body,
-input,
-select,
-textarea {
-    color: #fff;
-    font-family: var(--system-font);
-    font-size: 15pt;
-    font-weight: 300;
-    letter-spacing: -0.025em;
-    line-height: 1.75em;
-}
-
 a {
-    transition: border-color 0.2s ease-in-out;
-    border-bottom: dotted 1px;
     color: inherit;
-    outline: 0;
     text-decoration: none;
+    outline: 0;
+    border-bottom: dotted 1px;
+    transition: border-color var(--animation-duration) ease-in-out;
 }
 
 a:hover {
     border-color: transparent;
 }
 
-/* Icon */
-.icon {
-    text-decoration: none;
-    position: relative;
-    border-bottom: none;
-}
-
-.icon.solid:before {
-    font-weight: 900;
-}
-
-.icon.twitter:before {
-    content: "🐦";
-}
-.icon.github:before {
-    content: "💻";
-}
-.icon.envelope:before {
-    content: "✉️";
-}
-
-/* Unified keyframes */
+/* Animations */
 @keyframes fadeIn {
-    0% {
+    from {
         opacity: 0;
     }
-    100% {
+    to {
         opacity: 1;
     }
 }
 
 @keyframes slideUp {
-    0% {
+    from {
         transform: translate3d(0, 1em, 0);
         opacity: 0;
     }
-    100% {
+    to {
         transform: translate3d(0, 0, 0);
         opacity: 1;
     }
 }
 
 @keyframes bgScroll {
-    0% {
+    from {
         transform: translate3d(0, 0, 0);
     }
-    100% {
+    to {
         transform: translate3d(-2250px, 0, 0);
     }
 }
 
-/* Wrapper */
+/* Main structure */
 #wrapper {
-    animation: fadeIn 3s forwards;
-    height: 100%;
-    left: 0;
-    opacity: 0;
     position: fixed;
-    top: 0;
+    height: 100%;
     width: 100%;
-    will-change: opacity;
-}
-
-/* BG */
-#bg {
-    animation: bgScroll 60s linear infinite;
-    backface-visibility: hidden;
-    transform: translate3d(0, 0, 0);
-    background: #348cb2 url("images/bg.jpg") bottom left;
-    background-repeat: repeat-x;
-    height: 100%;
     left: 0;
-    opacity: 1;
-    position: fixed;
     top: 0;
-    will-change: transform;
-    background-size: 2250px auto;
-    width: 6750px;
+    opacity: 0;
+    will-change: opacity;
+    animation: fadeIn 3s forwards;
 }
 
-/* Overlay */
+#bg {
+    position: fixed;
+    height: 100%;
+    width: 6750px;
+    left: 0;
+    top: 0;
+    background: var(--bg-color) url("images/bg.jpg") bottom left repeat-x;
+    background-size: 2250px auto;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    animation: bgScroll 60s linear infinite;
+}
+
 #overlay {
-    animation: fadeIn 1.5s 1.5s forwards;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    opacity: 0;
     background-attachment: fixed, fixed;
     background-image: url("images/overlay-pattern.png"),
         url("images/overlay.svg");
@@ -299,61 +153,54 @@ a:hover {
         center center;
     background-repeat: repeat, no-repeat;
     background-size: auto, cover;
-    height: 100%;
-    left: 0;
-    opacity: 0;
-    position: fixed;
-    top: 0;
-    width: 100%;
+    animation: fadeIn 1.5s 1.5s forwards;
 }
 
-/* Main */
 #main {
-    height: 100%;
-    left: 0;
     position: fixed;
-    text-align: center;
-    top: 0;
+    height: 100%;
     width: 100%;
+    left: 0;
+    top: 0;
+    text-align: center;
 }
 
-#main:before {
+#main::before {
     content: "";
     display: inline-block;
     height: 100%;
-    margin-right: 0;
     vertical-align: middle;
     width: 1px;
 }
 
-/* Header */
+/* Header and navigation */
 #header {
-    animation: slideUp 1s 2.25s forwards;
-    backface-visibility: hidden;
-    transform: translate3d(0, 0, 0);
-    cursor: default;
     display: inline-block;
-    opacity: 0;
     position: relative;
-    text-align: center;
-    top: -1em;
-    vertical-align: middle;
     width: 90%;
+    top: -1em;
+    text-align: center;
+    vertical-align: middle;
+    opacity: 0;
+    cursor: default;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
     will-change: transform, opacity;
+    animation: slideUp 1s 2.25s forwards;
 }
 
 #header h1 {
     font-size: 4.2em;
     font-weight: 700;
+    line-height: 1;
     letter-spacing: -0.03em;
-    line-height: 1em;
 }
 
 #header p {
     font-size: 1.2em;
+    font-weight: 400;
     margin: 0.75em 0 0.25em 0;
     opacity: 0.75;
-    font-weight: 400;
 }
 
 #header nav {
@@ -361,16 +208,15 @@ a:hover {
 }
 
 #header nav li {
-    animation: slideUp 0.5s ease-in-out forwards;
-    backface-visibility: hidden;
-    transform: translate3d(0, 0, 0);
     display: inline-block;
     height: 5.35em;
-    line-height: 5.885em;
-    opacity: 0;
-    position: relative;
-    top: 0;
     width: 5.35em;
+    line-height: 5.885em;
+    position: relative;
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    animation: slideUp 0.5s ease-in-out forwards;
 }
 
 #header nav li:nth-child(1) {
@@ -382,66 +228,12 @@ a:hover {
 #header nav li:nth-child(3) {
     animation-delay: 3s;
 }
-#header nav li:nth-child(4) {
-    animation-delay: 3.25s;
-}
-#header nav li:nth-child(5) {
-    animation-delay: 3.5s;
-}
-#header nav li:nth-child(6) {
-    animation-delay: 3.75s;
-}
-#header nav li:nth-child(7) {
-    animation-delay: 4s;
-}
-#header nav li:nth-child(8) {
-    animation-delay: 4.25s;
-}
-#header nav li:nth-child(9) {
-    animation-delay: 4.5s;
-}
-#header nav li:nth-child(10) {
-    animation-delay: 4.75s;
-}
 
 #header nav a {
+    display: inline-block;
+    border: 0;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -webkit-touch-callout: none;
-    border: 0;
-    display: inline-block;
-}
-
-#header nav a:before {
-    transition: all 0.2s ease-in-out;
-    border-radius: 100%;
-    border: solid 1px #fff;
-    display: block;
-    font-size: 1.75em;
-    height: 2.5em;
-    line-height: 2.5em;
-    position: relative;
-    text-align: center;
-    top: 0;
-    width: 2.5em;
-}
-
-#header nav a:hover {
-    font-size: 1.1em;
-}
-
-#header nav a:hover:before {
-    background-color: rgba(255, 255, 255, 0.175);
-    color: #fff;
-}
-
-#header nav a:active {
-    font-size: 0.95em;
-    background: none;
-}
-
-#header nav a:active:before {
-    background-color: rgba(255, 255, 255, 0.35);
-    color: #fff;
 }
 
 #header nav a span {
@@ -449,50 +241,36 @@ a:hover {
 }
 
 #header nav a svg {
-    width: 2.25em;
-    height: 2.25em;
+    width: 3em;
+    height: 3em;
     stroke-width: 1.5;
     border-radius: 100%;
-    border: solid 1px #fff;
+    border: solid 1px var(--text-color);
     padding: 0.5em;
-    transition: all 0.2s ease-in-out;
+    transition: all var(--animation-duration) ease-in-out;
 }
 
 #header nav a:hover svg {
-    background-color: rgba(255, 255, 255, 0.175);
+    background-color: var(--icon-hover-bg);
     transform: scale(1.1);
 }
 
 #header nav a:active svg {
-    background-color: rgba(255, 255, 255, 0.35);
+    background-color: var(--icon-active-bg);
     transform: scale(0.95);
 }
 
-/* Footer */
-#footer {
-    background-image: linear-gradient(
-        top,
-        rgba(0, 0, 0, 0),
-        rgba(0, 0, 0, 0.5) 75%
-    );
-    bottom: 0;
-    cursor: default;
-    height: 6em;
-    left: 0;
-    line-height: 8em;
-    position: absolute;
-    text-align: center;
-    width: 100%;
+/* Utility for preload state */
+body.is-preload *,
+body.is-preload *::before,
+body.is-preload *::after {
+    animation: none !important;
+    transition: none !important;
 }
 
-/* Responsive Styles */
-
-/* Wide */
+/* Media queries */
 @media screen and (max-width: 1680px) {
-    body,
-    input,
-    select,
-    textarea {
+    body {
         font-size: 13pt;
     }
 
@@ -502,21 +280,17 @@ a:hover {
     }
 
     @keyframes bgScroll {
-        0% {
+        from {
             transform: translate3d(0, 0, 0);
         }
-        100% {
+        to {
             transform: translate3d(-1500px, 0, 0);
         }
     }
 }
 
-/* Normal */
 @media screen and (max-width: 1280px) {
-    body,
-    input,
-    select,
-    textarea {
+    body {
         font-size: 12pt;
     }
 
@@ -526,16 +300,15 @@ a:hover {
     }
 
     @keyframes bgScroll {
-        0% {
+        from {
             transform: translate3d(0, 0, 0);
         }
-        100% {
+        to {
             transform: translate3d(-750px, 0, 0);
         }
     }
 }
 
-/* Mobile */
 @media screen and (max-width: 736px) {
     body {
         min-width: 320px;
@@ -545,14 +318,14 @@ a:hover {
     #bg {
         background-size: 300px auto;
         width: 900px;
-        animation: bgScroll 30s linear infinite; /* Faster animation on mobile */
+        animation-duration: 30s;
     }
 
     @keyframes bgScroll {
-        0% {
+        from {
             transform: translate3d(0, 0, 0);
         }
-        100% {
+        to {
             transform: translate3d(-300px, 0, 0);
         }
     }
@@ -560,28 +333,16 @@ a:hover {
     #header h1 {
         font-size: 2.5em;
     }
-
     #header p {
         font-size: 1em;
     }
 
-    #header nav {
-        font-size: 1em;
-    }
-
-    #header nav a:hover,
-    #header nav a:active {
-        font-size: 1em;
-    }
-
-    /* Optimize animations for mobile */
     #wrapper,
     #overlay {
         animation-duration: 1.5s;
     }
 }
 
-/* Mobile (Portrait) */
 @media screen and (max-width: 480px) {
     #bg {
         background-size: 412.5px auto;
@@ -589,10 +350,10 @@ a:hover {
     }
 
     @keyframes bgScroll {
-        0% {
+        from {
             transform: translate3d(0, 0, 0);
         }
-        100% {
+        to {
             transform: translate3d(-412.5px, 0, 0);
         }
     }
