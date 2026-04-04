@@ -15,8 +15,8 @@
     --text-color: #fff;
     --bg-color: #348cb2;
     --animation-duration: 0.2s;
-    --icon-hover-bg: rgba(255, 255, 255, 0.175);
-    --icon-active-bg: rgba(255, 255, 255, 0.35);
+    --icon-hover-bg: color-mix(in srgb, white 17.5%, transparent);
+    --icon-active-bg: color-mix(in srgb, white 35%, transparent);
 }
 
 html {
@@ -31,54 +31,21 @@ body {
     line-height: 1.75;
     letter-spacing: -0.025em;
     color: var(--text-color);
-    background: #fff;
+    background: var(--bg-color);
     overflow: hidden;
     -webkit-text-size-adjust: none;
     height: 100%;
 }
 
 /* Elements */
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section,
-img {
-    display: block;
-}
-
 ol,
 ul {
     list-style: none;
 }
 
-table {
-    border-collapse: collapse;
-}
-
-input,
-select,
-textarea {
-    font-family: inherit;
-    appearance: none;
-}
-
 a {
     color: inherit;
     text-decoration: none;
-    outline: 0;
-    border-bottom: dotted 1px;
-    transition: border-color var(--animation-duration) ease-in-out;
-}
-
-a:hover {
-    border-color: transparent;
 }
 
 /* Animations */
@@ -200,6 +167,7 @@ a:hover {
     font-weight: 400;
     margin: 0.75em 0 0.25em 0;
     opacity: 0.75;
+    text-wrap: balance;
 }
 
 #header nav {
@@ -231,11 +199,8 @@ a:hover {
 #header nav a {
     display: inline-block;
     border: 0;
+    outline: 0;
     -webkit-tap-highlight-color: transparent;
-}
-
-#header nav a span {
-    display: none;
 }
 
 #header nav a svg {
@@ -245,7 +210,8 @@ a:hover {
     border-radius: 100%;
     border: solid 1px var(--text-color);
     padding: 0.5em;
-    transition: all var(--animation-duration) ease-in-out;
+    transition: background-color var(--animation-duration) ease-in-out,
+        transform var(--animation-duration) ease-in-out;
 }
 
 #header nav a:hover svg {
