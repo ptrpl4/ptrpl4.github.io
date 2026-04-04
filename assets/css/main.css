@@ -68,8 +68,7 @@ a {
     left: 0;
     top: 0;
     opacity: 1;
-    will-change: opacity;
-    transition: opacity 3s;
+    transition: opacity 1.5s;
 }
 
 #bg {
@@ -101,7 +100,7 @@ a {
         center center;
     background-repeat: repeat, no-repeat;
     background-size: auto, cover;
-    transition: opacity 1.5s 1.5s;
+    transition: opacity 0.75s 0.75s;
 }
 
 #main {
@@ -110,100 +109,85 @@ a {
     width: 100%;
     left: 0;
     top: 0;
-    text-align: center;
-}
-
-#main::before {
-    content: "";
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-    width: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Header and navigation */
 #header {
-    display: inline-block;
     position: relative;
     width: 90%;
     top: -1em;
     text-align: center;
-    vertical-align: middle;
-    opacity: 1;
     cursor: default;
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    will-change: transform, opacity;
-    transition: opacity 1s 2.25s, transform 1s 2.25s;
-}
-
-#header h1 {
-    font-size: 4.2em;
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: -0.03em;
-}
-
-#header p {
-    font-size: 1.2em;
-    font-weight: 400;
-    margin: 0.75em 0 0.25em 0;
-    opacity: 0.75;
-    text-wrap: balance;
-}
-
-#header nav {
-    margin: 1.5em 0 0 0;
-}
-
-#header nav li {
-    display: inline-block;
-    height: 5.35em;
-    width: 5.35em;
-    line-height: 5.885em;
-    position: relative;
     opacity: 1;
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-}
+    transition: opacity 0.5s 1s, transform 0.5s 1s;
 
-#header nav li:nth-child(1) {
-    transition-delay: 2.5s;
-}
-#header nav li:nth-child(2) {
-    transition-delay: 2.75s;
-}
-#header nav li:nth-child(3) {
-    transition-delay: 3s;
-}
+    & h1 {
+        font-size: 4.2em;
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: -0.03em;
+    }
 
-#header nav a {
-    display: inline-block;
-    border: 0;
-    outline: 0;
-    -webkit-tap-highlight-color: transparent;
-}
+    & p {
+        font-size: 1.2em;
+        font-weight: 400;
+        margin: 0.75em 0 0.25em 0;
+        opacity: 0.75;
+        text-wrap: balance;
+    }
 
-#header nav a svg {
-    width: 3em;
-    height: 3em;
-    stroke-width: 1.5;
-    border-radius: 100%;
-    border: solid 1px var(--text-color);
-    padding: 0.5em;
-    transition: background-color var(--animation-duration) ease-in-out,
-        transform var(--animation-duration) ease-in-out;
-}
+    & nav {
+        margin: 1.5em 0 0 0;
 
-#header nav a:hover svg {
-    background-color: var(--icon-hover-bg);
-    transform: scale(1.1);
-}
+        & li {
+            display: inline-block;
+            height: 5.35em;
+            width: 5.35em;
+            line-height: 5.885em;
+            position: relative;
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
 
-#header nav a:active svg {
-    background-color: var(--icon-active-bg);
-    transform: scale(0.95);
+            &:nth-child(1) { transition-delay: 1.25s; }
+            &:nth-child(2) { transition-delay: 1.5s; }
+            &:nth-child(3) { transition-delay: 1.75s; }
+        }
+
+        & a {
+            display: inline-block;
+            border: 0;
+            outline: 0;
+            -webkit-tap-highlight-color: transparent;
+
+            & svg {
+                width: 3em;
+                height: 3em;
+                stroke-width: 1.5;
+                border-radius: 100%;
+                border: solid 1px var(--text-color);
+                padding: 0.5em;
+                transition: background-color var(--animation-duration) ease-in-out,
+                    transform var(--animation-duration) ease-in-out;
+            }
+
+            &:hover svg {
+                background-color: var(--icon-hover-bg);
+                transform: scale(1.1);
+            }
+
+            &:active svg {
+                background-color: var(--icon-active-bg);
+                transform: scale(0.95);
+            }
+        }
+    }
 }
 
 /* Entry animations */
@@ -242,7 +226,7 @@ a {
 
     #wrapper,
     #overlay {
-        transition-duration: 1.5s;
+        transition-duration: 0.75s;
     }
 
     #header h1 {
