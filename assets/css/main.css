@@ -14,6 +14,7 @@
         "Segoe UI Symbol";
     --text-color: #fff;
     --bg-color: #348cb2;
+    --bg-tile: 2250px;
     --animation-duration: 0.2s;
     --icon-hover-bg: color-mix(in srgb, white 17.5%, transparent);
     --icon-active-bg: color-mix(in srgb, white 35%, transparent);
@@ -26,13 +27,14 @@ html {
 
 body {
     font-family: var(--system-font);
-    font-size: 15pt;
+    font-size: clamp(11pt, 7pt + 0.6vw, 15pt);
     font-weight: 300;
     line-height: 1.75;
     letter-spacing: -0.025em;
     color: var(--text-color);
     background: var(--bg-color);
     overflow: hidden;
+    overscroll-behavior: none;
     -webkit-text-size-adjust: none;
     height: 100%;
 }
@@ -49,32 +51,12 @@ a {
 }
 
 /* Animations */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes slideUp {
-    from {
-        transform: translate3d(0, 1em, 0);
-        opacity: 0;
-    }
-    to {
-        transform: translate3d(0, 0, 0);
-        opacity: 1;
-    }
-}
-
 @keyframes bgScroll {
     from {
         transform: translate3d(0, 0, 0);
     }
     to {
-        transform: translate3d(-2250px, 0, 0);
+        transform: translate3d(calc(-1 * var(--bg-tile)), 0, 0);
     }
 }
 
@@ -85,19 +67,19 @@ a {
     width: 100%;
     left: 0;
     top: 0;
-    opacity: 0;
+    opacity: 1;
     will-change: opacity;
-    animation: fadeIn 3s forwards;
+    transition: opacity 3s;
 }
 
 #bg {
     position: fixed;
     height: 100%;
-    width: 6750px;
+    width: calc(var(--bg-tile) * 3);
     left: 0;
     top: 0;
     background: var(--bg-color) url("images/bg.jpg") bottom left repeat-x;
-    background-size: 2250px auto;
+    background-size: var(--bg-tile) auto;
     will-change: transform;
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
@@ -110,7 +92,7 @@ a {
     width: 100%;
     left: 0;
     top: 0;
-    opacity: 0;
+    opacity: 1;
     background-attachment: fixed, fixed;
     background-image: url("images/overlay-pattern.png"),
         url("images/overlay.svg");
@@ -119,7 +101,7 @@ a {
         center center;
     background-repeat: repeat, no-repeat;
     background-size: auto, cover;
-    animation: fadeIn 1.5s 1.5s forwards;
+    transition: opacity 1.5s 1.5s;
 }
 
 #main {
@@ -147,12 +129,12 @@ a {
     top: -1em;
     text-align: center;
     vertical-align: middle;
-    opacity: 0;
+    opacity: 1;
     cursor: default;
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
     will-change: transform, opacity;
-    animation: slideUp 1s 2.25s forwards;
+    transition: opacity 1s 2.25s, transform 1s 2.25s;
 }
 
 #header h1 {
@@ -180,20 +162,20 @@ a {
     width: 5.35em;
     line-height: 5.885em;
     position: relative;
-    opacity: 0;
+    opacity: 1;
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
-    animation: slideUp 0.5s ease-in-out forwards;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
 }
 
 #header nav li:nth-child(1) {
-    animation-delay: 2.5s;
+    transition-delay: 2.5s;
 }
 #header nav li:nth-child(2) {
-    animation-delay: 2.75s;
+    transition-delay: 2.75s;
 }
 #header nav li:nth-child(3) {
-    animation-delay: 3s;
+    transition-delay: 3s;
 }
 
 #header nav a {
@@ -224,105 +206,73 @@ a {
     transform: scale(0.95);
 }
 
-/* Utility for preload state */
-body.is-preload *,
-body.is-preload *::before,
-body.is-preload *::after {
-    animation: none !important;
-    transition: none !important;
+/* Entry animations */
+@starting-style {
+    #wrapper { opacity: 0; }
+    #overlay { opacity: 0; }
+    #header { opacity: 0; transform: translate3d(0, 1em, 0); }
+    #header nav li { opacity: 0; transform: translate3d(0, 1em, 0); }
 }
 
 /* Media queries */
 @media screen and (max-width: 1680px) {
-    body {
-        font-size: 13pt;
-    }
-
-    #bg {
-        background-size: 1500px auto;
-        width: 4500px;
-    }
-
-    @keyframes bgScroll {
-        from {
-            transform: translate3d(0, 0, 0);
-        }
-        to {
-            transform: translate3d(-1500px, 0, 0);
-        }
+    :root {
+        --bg-tile: 1500px;
     }
 }
 
 @media screen and (max-width: 1280px) {
-    body {
-        font-size: 12pt;
-    }
-
-    #bg {
-        background-size: 750px auto;
-        width: 2250px;
-    }
-
-    @keyframes bgScroll {
-        from {
-            transform: translate3d(0, 0, 0);
-        }
-        to {
-            transform: translate3d(-750px, 0, 0);
-        }
+    :root {
+        --bg-tile: 750px;
     }
 }
 
 @media screen and (max-width: 736px) {
     body {
         min-width: 320px;
-        font-size: 11pt;
+    }
+
+    :root {
+        --bg-tile: 300px;
     }
 
     #bg {
-        background-size: 300px auto;
-        width: 900px;
         animation-duration: 30s;
     }
 
-    @keyframes bgScroll {
-        from {
-            transform: translate3d(0, 0, 0);
-        }
-        to {
-            transform: translate3d(-300px, 0, 0);
-        }
+    #wrapper,
+    #overlay {
+        transition-duration: 1.5s;
     }
 
     #header h1 {
         font-size: 2.5em;
     }
+
     #header p {
         font-size: 1em;
-    }
-
-    #wrapper,
-    #overlay {
-        animation-duration: 1.5s;
     }
 }
 
 @media screen and (max-width: 480px) {
-    #bg {
-        background-size: 412.5px auto;
-        width: 1237.5px;
-    }
-
-    @keyframes bgScroll {
-        from {
-            transform: translate3d(0, 0, 0);
-        }
-        to {
-            transform: translate3d(-412.5px, 0, 0);
-        }
+    :root {
+        --bg-tile: 412.5px;
     }
 
     #header nav {
         padding: 0 1em;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #wrapper,
+    #overlay,
+    #header,
+    #header nav li {
+        transition: none;
+    }
+
+    #bg {
+        animation: none;
     }
 }

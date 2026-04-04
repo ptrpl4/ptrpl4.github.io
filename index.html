@@ -10,6 +10,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#348cb2" />
 
+        <!-- Open Graph -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://ptrpl4.page" />
+        <meta property="og:title" content="Pyotr Void — Software Engineer" />
+        <meta property="og:description" content="Personal website of Pyotr Void, Software Engineer" />
+        <meta property="og:image" content="https://ptrpl4.page/assets/favicons/web-app-manifest-512x512.png" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:creator" content="@ptrpl4" />
+
         <!-- Favicon -->
         <link
             rel="icon"
@@ -29,7 +38,7 @@
             ><link rel="stylesheet" href="assets/css/noscript.css"
         /></noscript>
     </head>
-    <body class="is-preload">
+    <body>
         <div id="wrapper">
             <div id="bg"></div>
             <div id="overlay"></div>
@@ -116,28 +125,5 @@
                 </header>
             </div>
         </div>
-
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                setTimeout(function () {
-                    document.body.classList.remove("is-preload");
-                }, 100);
-            });
-
-            if ("ontouchstart" in window) {
-                document.addEventListener(
-                    "touchmove",
-                    function (e) {
-                        if (window.innerHeight === window.outerHeight)
-                            e.preventDefault();
-                    },
-                    { passive: false },
-                );
-
-                window.addEventListener("orientationchange", function () {
-                    window.scrollTo(0, 0);
-                });
-            }
-        </script>
     </body>
 </html>
