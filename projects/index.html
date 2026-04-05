@@ -85,6 +85,19 @@
                 border-color: transparent;
             }
 
+            .project-live {
+                font-size: 0.75em;
+                opacity: 0.85;
+                margin-left: 0.75em;
+                vertical-align: middle;
+                border-bottom: solid 1px rgba(255, 255, 255, 0.5);
+            }
+
+            .project-live:hover {
+                opacity: 1;
+                border-color: transparent;
+            }
+
             .project-desc {
                 font-size: 0.8em;
                 opacity: 0.65;
@@ -158,7 +171,7 @@
                         cutoff.setFullYear(cutoff.getFullYear() - 2);
 
                         var recent = repos.filter(function (r) {
-                            return new Date(r.pushed_at) >= cutoff;
+                            return !r.archived && new Date(r.pushed_at) >= cutoff;
                         });
 
                         recent.forEach(function (repo) {
@@ -168,9 +181,11 @@
                             var meta = [];
                             if (repo.language) meta.push(repo.language);
                             if (repo.stargazers_count > 0) meta.push("★ " + repo.stargazers_count);
+                            if (repo.license && repo.license.spdx_id && repo.license.spdx_id !== "NOASSERTION") meta.push(repo.license.spdx_id);
 
                             item.innerHTML =
                                 '<a class="project-name" href="' + repo.html_url + '" target="_blank" rel="noopener">' + repo.name + "</a>" +
+                                (repo.homepage ? ' <a class="project-live" href="' + repo.homepage + '" target="_blank" rel="noopener">↗ live</a>' : "") +
                                 (repo.description ? '<p class="project-desc">' + repo.description + "</p>" : "") +
                                 (meta.length ? '<div class="project-meta">' + meta.map(function (m) { return "<span>" + m + "</span>"; }).join("") + "</div>" : "");
 
