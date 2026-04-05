@@ -11,25 +11,31 @@
 /* Themes */
 :root,
 [data-theme="dark"] {
-    --bg: #000;
-    --fg: #fff;
-    --circle-bg: #fff;
-    --circle-fg: #000;
-    --circle-shadow: 0 0 80px rgba(255, 255, 255, 0.12);
+    --bg: #141414;
+    --fg: #f2f0ed;
+    --circle-bg: #f2f0ed;
+    --circle-fg: #141414;
+    --circle-shadow: 0 0 80px rgba(242, 240, 237, 0.1);
     --icon-hover-bg: rgba(0, 0, 0, 0.08);
     --icon-active-bg: rgba(0, 0, 0, 0.18);
+    --border-subtle: rgba(255, 255, 255, 0.15);
+    --border-medium: rgba(255, 255, 255, 0.5);
+    --orbit-ring: rgba(242, 240, 237, 0.07);
     --animation-duration: 0.2s;
     color-scheme: dark;
 }
 
 [data-theme="light"] {
-    --bg: #fff;
-    --fg: #000;
-    --circle-bg: #000;
-    --circle-fg: #fff;
-    --circle-shadow: 0 0 80px rgba(0, 0, 0, 0.12);
+    --bg: #f2f0ed;
+    --fg: #141414;
+    --circle-bg: #141414;
+    --circle-fg: #f2f0ed;
+    --circle-shadow: 0 0 80px rgba(20, 20, 20, 0.1);
     --icon-hover-bg: rgba(255, 255, 255, 0.08);
     --icon-active-bg: rgba(255, 255, 255, 0.18);
+    --border-subtle: rgba(0, 0, 0, 0.15);
+    --border-medium: rgba(0, 0, 0, 0.5);
+    --orbit-ring: rgba(20, 20, 20, 0.07);
     color-scheme: light;
 }
 
@@ -42,7 +48,7 @@ html {
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
         Helvetica, Arial, sans-serif;
-    font-size: 15pt;
+    font-size: 17pt;
     font-weight: 300;
     line-height: 1.75;
     letter-spacing: -0.025em;
@@ -93,8 +99,26 @@ a:hover {
     }
 }
 
-/* Circle */
+/* Full orbit (counter-clockwise, matching prograde direction) */
+@keyframes orbit-ccw {
+    to { transform: rotate(-360deg); }
+}
+
+/* Solar system */
+.solar-system {
+    position: relative;
+    width: 760px;
+    height: 760px;
+    animation: fadeIn 0.6s ease forwards;
+}
+
+/* Circle (sun) */
 .circle {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
     width: 380px;
     height: 380px;
     border-radius: 50%;
@@ -106,7 +130,78 @@ a:hover {
     justify-content: center;
     transition: background var(--animation-duration) ease,
         box-shadow var(--animation-duration) ease;
-    animation: fadeIn 0.6s ease forwards;
+}
+
+/*
+ * Orbit wrappers
+ *
+ * Each .orbit is a zero-size div anchored at the sun center (380,380).
+ * Rotating it carries the planet child through a full circle.
+ * --r sets the orbital radius; ::before draws the orbit ring at that radius.
+ *
+ * Orbital radii use log10 scale, mapped from Mercury=210px to Neptune=340px.
+ * Durations proportional to real sidereal periods (Earth = 40 s).
+ * animation-delay is injected by inline JS in <head> to match today's
+ * heliocentric longitudes.
+ *
+ * Real periods (days): Hg 87.97, Ve 224.7, Ea 365.25, Ma 686.97,
+ *   Ju 4332.6, Sa 10759, Ur 30685, Ne 60190
+ */
+
+.orbit {
+    position: absolute;
+    left: 380px;
+    top: 380px;
+    width: 0;
+    height: 0;
+    transform-origin: 0 0;
+    z-index: 1;
+}
+
+.orbit::before {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid var(--orbit-ring);
+    width:  calc(var(--r) * 2);
+    height: calc(var(--r) * 2);
+    left:   calc(var(--r) * -1);
+    top:    calc(var(--r) * -1);
+    transition: border-color var(--animation-duration) ease;
+}
+
+/* Log-scale radii + animation durations */
+.orbit-mercury { --r: 210px; animation: orbit-ccw  9.64s linear infinite; }
+.orbit-venus   { --r: 229px; animation: orbit-ccw 24.62s linear infinite; }
+.orbit-earth   { --r: 238px; animation: orbit-ccw    40s linear infinite; }
+.orbit-mars    { --r: 251px; animation: orbit-ccw 75.28s linear infinite; }
+.orbit-jupiter { --r: 288px; animation: orbit-ccw 474.8s linear infinite; }
+.orbit-saturn  { --r: 306px; animation: orbit-ccw  1179s linear infinite; }
+.orbit-uranus  { --r: 327px; animation: orbit-ccw  3363s linear infinite; }
+.orbit-neptune { --r: 340px; animation: orbit-ccw  6597s linear infinite; }
+
+/* Planets sit at the top of their orbit wrapper (pointing north = 90° in helio) */
+.planet {
+    position: absolute;
+    left: 0;
+    border-radius: 50%;
+    background: var(--circle-bg);
+    transform: translate(-50%, -50%);
+    transition: background var(--animation-duration) ease;
+}
+
+/* Sizes proportional to real diameters (Sun=380px ref); inner planets floored at 4–8px */
+.planet-mercury { width: 4px;  height: 4px;  top: -210px; }
+.planet-venus   { width: 8px;  height: 8px;  top: -229px; }
+.planet-earth   { width: 8px;  height: 8px;  top: -238px; }
+.planet-mars    { width: 6px;  height: 6px;  top: -251px; }
+.planet-jupiter { width: 40px; height: 40px; top: -288px; }
+.planet-saturn  { width: 33px; height: 33px; top: -306px; }
+.planet-uranus  { width: 14px; height: 14px; top: -327px; }
+.planet-neptune { width: 14px; height: 14px; top: -340px; }
+
+@media (prefers-reduced-motion: reduce) {
+    .orbit { animation: none; }
 }
 
 /* Header */
@@ -125,14 +220,14 @@ a:hover {
 }
 
 #header .tagline {
-    font-size: 0.6em;
+    font-size: 0.72em;
     font-weight: 400;
     margin: 0.6em 0 0.2em;
     opacity: 0.65;
 }
 
 #header .page-links {
-    font-size: 0.55em;
+    font-size: 0.66em;
     margin: 0.2em 0 0.8em;
     opacity: 0.55;
     border-bottom: dotted 1px currentColor;
@@ -187,6 +282,7 @@ a:hover {
     position: fixed;
     top: 1.2em;
     right: 1.4em;
+    z-index: 3;
     background: none;
     border: none;
     cursor: pointer;
@@ -204,14 +300,27 @@ a:hover {
 }
 
 /* Responsive */
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 500px) {
     body {
-        font-size: 13pt;
+        font-size: 14pt;
+    }
+
+    /* On mobile show only the sun; full-orbit solar system is desktop-only */
+    .solar-system {
+        position: static;
+        width: auto;
+        height: auto;
     }
 
     .circle {
+        position: static;
+        transform: none;
         width: 320px;
         height: 320px;
+    }
+
+    .orbit {
+        display: none;
     }
 
     #header h1 {
