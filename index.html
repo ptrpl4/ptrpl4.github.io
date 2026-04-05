@@ -42,6 +42,7 @@
         <button id="theme-toggle" aria-label="Toggle theme">◐</button>
 
         <div class="space">
+            <div id="stars"></div>
             <div id="sky-object"></div>
 
             <div class="circle">
@@ -116,6 +117,24 @@
 
         <script>
             (function () {
+                function createStars() {
+                    var el = document.getElementById("stars");
+                    var wrapper = document.querySelector(".space");
+                    if (!el || !wrapper) return;
+                    var w = wrapper.offsetWidth;
+                    var h = wrapper.offsetHeight;
+                    var shadows = [];
+                    for (var i = 0; i < 90; i++) {
+                        var x = Math.round(Math.random() * w);
+                        var y = Math.round(Math.random() * h);
+                        var a = (0.25 + Math.random() * 0.65).toFixed(2);
+                        shadows.push(x + "px " + y + "px 1px rgba(200,220,255," + a + ")");
+                    }
+                    el.style.boxShadow = shadows.join(",");
+                }
+
+                createStars();
+
                 // Place sun/moon in a random position in the upper arc above Earth.
                 // R is scaled to Earth's actual rendered radius so it works on all screen sizes.
                 function placeSkyObject(animate) {

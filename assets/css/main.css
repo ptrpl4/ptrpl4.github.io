@@ -129,6 +129,22 @@ a:hover {
         box-shadow var(--animation-duration) ease;
 }
 
+/* Stars — dark mode only, JS-generated via box-shadow */
+#stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    z-index: 1;
+    pointer-events: none;
+    transition: opacity var(--animation-duration) ease;
+}
+
+[data-theme="light"] #stars {
+    opacity: 0;
+}
+
 /*
  * Sky object — sun (light theme) or moon (dark theme).
  * Positioned via JS in the upper arc; transitions on reposition.
