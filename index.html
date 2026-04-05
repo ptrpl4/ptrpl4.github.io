@@ -37,69 +37,19 @@
                 }
             })();
         </script>
-
-        <script>
-            // Compute today's heliocentric longitudes and inject animation-delay
-            // for each orbit so planets start at their real current positions.
-            //
-            // Coordinate convention:
-            //   CSS orbit wrapper at top (0° rotation) → planet points north (90° helio)
-            //   CCW animation → prograde motion
-            //   To place planet at heliocentric longitude L (deg, CCW from vernal equinox):
-            //     phase = ((L - 90 + 360) % 360) / 360
-            //     delay = -(phase * animation_duration_seconds)
-            (function () {
-                // Days elapsed since J2000.0 (Jan 1.5, 2000 = noon UTC Jan 1 2000)
-                var J2000 = Date.UTC(2000, 0, 1, 12, 0, 0);
-                var d = (Date.now() - J2000) / 86400000;
-
-                // [mean longitude at J2000 (deg), sidereal period (days), anim duration (s)]
-                var planets = [
-                    ["mercury",  252.2509,  87.9691,  9.64],
-                    ["venus",    181.9798, 224.701,  24.62],
-                    ["earth",    100.4664, 365.256,  40.00],
-                    ["mars",     355.4329, 686.971,  75.28],
-                    ["jupiter",   34.3515, 4332.59, 474.8],
-                    ["saturn",    50.0774, 10759.22, 1179],
-                    ["uranus",   314.0550, 30685.4,  3363],
-                    ["neptune",  304.3487, 60190.0,  6597]
-                ];
-
-                var css = "";
-                for (var i = 0; i < planets.length; i++) {
-                    var p = planets[i];
-                    var name = p[0], L0 = p[1], period = p[2], T = p[3];
-                    var L = ((L0 + 360 * d / period) % 360 + 360) % 360;
-                    var phase = ((L - 90 + 360) % 360) / 360;
-                    var delay = -(phase * T);
-                    css += ".orbit-" + name + "{animation-delay:" + delay.toFixed(2) + "s}";
-                }
-
-                var s = document.createElement("style");
-                s.textContent = css;
-                document.head.appendChild(s);
-            })();
-        </script>
     </head>
     <body>
         <button id="theme-toggle" aria-label="Toggle theme">◐</button>
 
-        <div class="solar-system">
-            <div class="orbit orbit-mercury"><div class="planet planet-mercury"></div></div>
-            <div class="orbit orbit-venus">  <div class="planet planet-venus"></div>  </div>
-            <div class="orbit orbit-earth">  <div class="planet planet-earth"></div>  </div>
-            <div class="orbit orbit-mars">   <div class="planet planet-mars"></div>   </div>
-            <div class="orbit orbit-jupiter"><div class="planet planet-jupiter"></div></div>
-            <div class="orbit orbit-saturn"> <div class="planet planet-saturn"></div> </div>
-            <div class="orbit orbit-uranus"> <div class="planet planet-uranus"></div> </div>
-            <div class="orbit orbit-neptune"><div class="planet planet-neptune"></div></div>
+        <div class="space">
+            <div id="sky-object"></div>
 
             <div class="circle">
                 <header id="header">
                     <h1>Pyotr Void</h1>
                     <p class="tagline">
-                        Software Engineer &nbsp;&bull;&nbsp; Human
-                        &nbsp;&bull;&nbsp; Never asked for this
+                        Software Engineer &nbsp;&bull;&nbsp; Human<br>
+                        Never asked for this
                     </p>
                     <a class="page-links" href="/projects">projects</a>
 
@@ -165,12 +115,48 @@
         </div>
 
         <script>
-            document.getElementById("theme-toggle").addEventListener("click", function () {
-                var html = document.documentElement;
-                var next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
-                html.setAttribute("data-theme", next);
-                localStorage.setItem("theme", next);
-            });
+            (function () {
+                // Place sun/moon in a random position in the upper arc above Earth.
+                // R is scaled to Earth's actual rendered radius so it works on all screen sizes.
+                function placeSkyObject(animate) {
+                    var wrapper = document.querySelector(".space");
+                    var circle  = document.querySelector(".circle");
+                    var el      = document.getElementById("sky-object");
+                    if (!el || !wrapper || !circle) return;
+
+                    var wRect = wrapper.getBoundingClientRect();
+                    var cRect = circle.getBoundingClientRect();
+                    var ex = cRect.left - wRect.left + cRect.width  / 2;
+                    var ey = cRect.top  - wRect.top  + cRect.height / 2;
+                    var er = cRect.width / 2;
+
+                    var angle = (Math.random() * 140 - 70) * Math.PI / 180;
+                    var dist  = er * 1.45 + Math.random() * er * 0.15;
+                    var x = ex + dist * Math.sin(angle);
+                    var y = ey - dist * Math.cos(angle);
+
+                    if (!animate) {
+                        el.style.transition = "none";
+                        el.style.left = x + "px";
+                        el.style.top  = y + "px";
+                        el.offsetHeight; // force reflow before restoring transition
+                        el.style.transition = "";
+                    } else {
+                        el.style.left = x + "px";
+                        el.style.top  = y + "px";
+                    }
+                }
+
+                placeSkyObject(false);
+
+                document.getElementById("theme-toggle").addEventListener("click", function () {
+                    var html = document.documentElement;
+                    var next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
+                    html.setAttribute("data-theme", next);
+                    localStorage.setItem("theme", next);
+                    placeSkyObject(true);
+                });
+            })();
         </script>
     </body>
 </html>
