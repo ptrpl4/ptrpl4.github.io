@@ -135,6 +135,24 @@
 
                 createStars();
 
+                function setMoonPhase() {
+                    var el = document.getElementById("sky-object");
+                    if (!el) return;
+                    if (Math.random() < 0.15) {
+                        // Full moon
+                        el.style.setProperty("--crescent-opacity", "0");
+                    } else {
+                        // Random crescent: left 2px (thin sliver) to -38px (thick gibbous)
+                        var left = (2 - Math.random() * 40).toFixed(1);
+                        el.style.setProperty("--crescent-left", left + "px");
+                        el.style.setProperty("--crescent-opacity", "1");
+                    }
+                }
+
+                if (document.documentElement.getAttribute("data-theme") === "dark") {
+                    setMoonPhase();
+                }
+
                 // Place sun/moon in a random position in the upper arc above Earth.
                 // R is scaled to Earth's actual rendered radius so it works on all screen sizes.
                 function placeSkyObject(animate) {
@@ -174,6 +192,7 @@
                     html.setAttribute("data-theme", next);
                     localStorage.setItem("theme", next);
                     placeSkyObject(true);
+                    if (next === "dark") setMoonPhase();
                 });
             })();
         </script>

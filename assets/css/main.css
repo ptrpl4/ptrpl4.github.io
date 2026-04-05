@@ -168,11 +168,15 @@ a:hover {
     height: 64px;
 }
 
-/* Moon (dark theme): smaller, crescent via ::after overlay */
+/* Moon (dark theme): smaller, crescent via ::after overlay, sphere gradient */
 [data-theme="dark"] #sky-object {
     width: 52px;
     height: 52px;
     overflow: visible;
+    background:
+        radial-gradient(ellipse 35% 25% at 58% 62%, rgba(100, 90, 70, 0.35), transparent),
+        radial-gradient(ellipse 20% 18% at 72% 30%, rgba(130, 120, 100, 0.25), transparent),
+        radial-gradient(circle at 64% 34%, #e2d8c4, #c4bca8 42%, #968c7c);
 }
 
 /*
@@ -188,8 +192,11 @@ a:hover {
     border-radius: 50%;
     background: var(--bg);
     top: -2px;
-    left: -12px;
-    transition: background var(--animation-duration) ease;
+    left: var(--crescent-left, -12px);
+    opacity: var(--crescent-opacity, 1);
+    transition: background var(--animation-duration) ease,
+        left 0.7s ease,
+        opacity 0.7s ease;
 }
 
 /* Header */
