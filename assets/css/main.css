@@ -31,7 +31,7 @@
     --fg: #1a3050;
     --circle-bg: #1c4e8c;
     --circle-fg: #0a1828;
-    --circle-shadow: 0 0 80px rgba(28, 78, 140, 0.4), 0 0 18px 6px rgba(80, 160, 255, 0.55), 0 0 40px 2px rgba(120, 190, 255, 0.25), inset 0 45px 40px -15px rgba(255, 250, 200, 0.2), inset 0 -65px 55px -10px rgba(0, 4, 25, 0.6), inset 0 0 25px rgba(50, 100, 200, 0.12);
+    --circle-shadow: 0 0 14px 5px rgba(80, 135, 180, 0.5), 0 0 80px rgba(55, 105, 155, 0.38), 0 0 160px rgba(40, 85, 135, 0.2), 0 30px 60px rgba(55, 100, 150, 0.28), inset 0 45px 40px -15px rgba(255, 250, 200, 0.2), inset 0 -65px 55px -10px rgba(0, 4, 25, 0.6), inset 0 0 25px rgba(50, 100, 200, 0.12);
     --icon-hover-bg: rgba(255, 255, 255, 0.12);
     --icon-active-bg: rgba(255, 255, 255, 0.24);
     --border-subtle: rgba(26, 48, 80, 0.12);
@@ -256,6 +256,8 @@ a:hover {
     box-shadow: var(--sky-glow);
     transform: translate(-50%, -50%);
     transition: left 0.8s ease, top 0.8s ease,
+        width var(--animation-duration) ease,
+        height var(--animation-duration) ease,
         background var(--animation-duration) ease,
         box-shadow var(--animation-duration) ease;
 }
@@ -424,12 +426,12 @@ a:hover {
     }
 
     #satellite {
-        transform: translate(188px, -2px);
+        transform: translate(145px, -2px); /* max right: 160+145=305px < 320px */
     }
 
     #comet {
         top: 70px;
-        left: 270px;
+        left: 260px;
     }
 }
 
@@ -441,5 +443,19 @@ a:hover {
     .circle {
         width: 280px;
         height: 280px;
+    }
+
+    #sat-orbit {
+        left: 150px; /* center of 300px space */
+        top: 400px;  /* 540 - 280/2 */
+    }
+
+    #satellite {
+        transform: translate(128px, -2px); /* max right: 150+128=278px < 300px */
+    }
+
+    #comet {
+        top: 65px;
+        left: 245px;
     }
 }
