@@ -14,7 +14,7 @@
     --bg: #0a0e18;
     --fg: #7898b8;
     --circle-bg: #091830;
-    --circle-fg: #90b8d8;
+    --circle-fg: #deeeff;
     --circle-shadow: 0 0 80px rgba(20, 50, 120, 0.3), 0 0 12px 4px rgba(60, 130, 255, 0.35), inset 0 0 30px rgba(30, 80, 220, 0.22);
     --icon-hover-bg: rgba(255, 255, 255, 0.06);
     --icon-active-bg: rgba(255, 255, 255, 0.14);
@@ -30,8 +30,8 @@
     --bg: #7aaac8;
     --fg: #1a3050;
     --circle-bg: #1c4e8c;
-    --circle-fg: #d8eeff;
-    --circle-shadow: 0 0 80px rgba(28, 78, 140, 0.4), 0 0 18px 6px rgba(80, 160, 255, 0.55), 0 0 40px 2px rgba(120, 190, 255, 0.25), inset 0 0 25px rgba(50, 100, 200, 0.15);
+    --circle-fg: #0a1828;
+    --circle-shadow: 0 0 80px rgba(28, 78, 140, 0.4), 0 0 18px 6px rgba(80, 160, 255, 0.55), 0 0 40px 2px rgba(120, 190, 255, 0.25), inset 0 45px 40px -15px rgba(255, 250, 200, 0.2), inset 0 -65px 55px -10px rgba(0, 4, 25, 0.6), inset 0 0 25px rgba(50, 100, 200, 0.12);
     --icon-hover-bg: rgba(255, 255, 255, 0.12);
     --icon-active-bg: rgba(255, 255, 255, 0.24);
     --border-subtle: rgba(26, 48, 80, 0.12);
@@ -216,6 +216,33 @@ a:hover {
     100% { opacity: 0; transform: translate(-310px, 225px); }
 }
 
+/* Clouds — full coverage cloud deck with variation so it reads as texture not flat */
+.circle::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 85% 45% at 30% 28%, rgba(210, 220, 235, 0.42) 30%, transparent 80%),
+        radial-gradient(ellipse 75% 40% at 72% 22%, rgba(210, 220, 235, 0.38) 30%, transparent 80%),
+        radial-gradient(ellipse 80% 42% at 55% 65%, rgba(210, 220, 235, 0.40) 30%, transparent 80%),
+        radial-gradient(ellipse 65% 35% at 18% 62%, rgba(210, 220, 235, 0.35) 30%, transparent 80%),
+        radial-gradient(ellipse 70% 38% at 82% 60%, rgba(210, 220, 235, 0.36) 30%, transparent 80%),
+        radial-gradient(ellipse 95% 95% at 50% 50%, rgba(200, 215, 230, 0.18) 0%, transparent 100%);
+}
+
+[data-theme="light"] .circle::before {
+    background:
+        radial-gradient(ellipse 85% 45% at 30% 28%, rgba(255, 255, 255, 0.55) 30%, transparent 80%),
+        radial-gradient(ellipse 75% 40% at 72% 22%, rgba(255, 255, 255, 0.50) 30%, transparent 80%),
+        radial-gradient(ellipse 80% 42% at 55% 65%, rgba(255, 255, 255, 0.52) 30%, transparent 80%),
+        radial-gradient(ellipse 65% 35% at 18% 62%, rgba(255, 255, 255, 0.45) 30%, transparent 80%),
+        radial-gradient(ellipse 70% 38% at 82% 60%, rgba(255, 255, 255, 0.48) 30%, transparent 80%),
+        radial-gradient(ellipse 95% 95% at 50% 50%, rgba(255, 255, 255, 0.22) 0%, transparent 100%);
+}
+
 /*
  * Sky object — sun (light theme) or moon (dark theme).
  * Positioned via JS in the upper arc; transitions on reposition.
@@ -276,6 +303,11 @@ a:hover {
     cursor: default;
     padding: 1em;
     animation: slideUp 0.6s 0.2s both;
+    text-shadow: 0 1px 10px rgba(0, 8, 24, 0.6);
+}
+
+[data-theme="light"] #header {
+    text-shadow: 0 1px 8px rgba(255, 255, 255, 0.7);
 }
 
 #header h1 {
