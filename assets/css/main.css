@@ -15,29 +15,29 @@
     --fg: #7898b8;
     --circle-bg: #091830;
     --circle-fg: #90b8d8;
-    --circle-shadow: 0 0 80px rgba(20, 50, 120, 0.3);
+    --circle-shadow: 0 0 80px rgba(20, 50, 120, 0.3), 0 0 12px 4px rgba(60, 130, 255, 0.35), inset 0 0 30px rgba(30, 80, 220, 0.22);
     --icon-hover-bg: rgba(255, 255, 255, 0.06);
     --icon-active-bg: rgba(255, 255, 255, 0.14);
     --border-subtle: rgba(120, 152, 184, 0.15);
     --border-medium: rgba(120, 152, 184, 0.4);
     --sky-color: #c4bca8;
-    --sky-glow: 0 0 20px rgba(196, 188, 168, 0.2), 0 0 40px rgba(196, 188, 168, 0.08);
+    --sky-glow: 0 0 22px rgba(196, 188, 168, 0.38), 0 0 55px rgba(196, 188, 168, 0.18), 0 0 90px rgba(180, 175, 160, 0.08);
     --animation-duration: 0.2s;
     color-scheme: dark;
 }
 
 [data-theme="light"] {
-    --bg: #c8e0f0;
+    --bg: #7aaac8;
     --fg: #1a3050;
     --circle-bg: #1c4e8c;
     --circle-fg: #d8eeff;
-    --circle-shadow: 0 0 80px rgba(28, 78, 140, 0.25);
+    --circle-shadow: 0 0 80px rgba(28, 78, 140, 0.4), 0 0 18px 6px rgba(80, 160, 255, 0.55), 0 0 40px 2px rgba(120, 190, 255, 0.25), inset 0 0 25px rgba(50, 100, 200, 0.15);
     --icon-hover-bg: rgba(255, 255, 255, 0.12);
     --icon-active-bg: rgba(255, 255, 255, 0.24);
     --border-subtle: rgba(26, 48, 80, 0.12);
     --border-medium: rgba(26, 48, 80, 0.4);
     --sky-color: #ffcc28;
-    --sky-glow: 0 0 30px rgba(255, 204, 40, 0.9), 0 0 60px rgba(255, 170, 10, 0.5), 0 0 110px rgba(255, 140, 0, 0.25);
+    --sky-glow: 0 0 35px rgba(255, 204, 40, 1), 0 0 80px rgba(255, 170, 10, 0.75), 0 0 160px rgba(255, 140, 0, 0.45), 0 0 240px rgba(255, 120, 0, 0.18);
     color-scheme: light;
 }
 
@@ -109,7 +109,7 @@ a:hover {
     animation: fadeIn 0.6s ease forwards;
 }
 
-/* Circle (Earth) */
+/* Circle (Earth) — texture rotates via background-position animation */
 .circle {
     position: absolute;
     left: 50%;
@@ -143,6 +143,77 @@ a:hover {
 
 [data-theme="light"] #stars {
     opacity: 0;
+}
+
+/* Satellite — light theme only, orbits Earth at z-index 1 (passes behind) */
+#sat-orbit {
+    position: absolute;
+    left: 380px;
+    top: 510px;
+    width: 0;
+    height: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--animation-duration) ease;
+    animation: orbit-sat 14s linear infinite;
+}
+
+[data-theme="light"] #sat-orbit {
+    opacity: 1;
+}
+
+#satellite {
+    position: absolute;
+    width: 7px;
+    height: 4px;
+    background: rgba(210, 220, 235, 0.95);
+    border-radius: 1px;
+    transform: translate(238px, -2px);
+    box-shadow:
+        0 0 5px 1px rgba(160, 200, 255, 0.8),
+        -9px 0 0 2px rgba(170, 195, 220, 0.75),
+        9px 0 0 2px rgba(170, 195, 220, 0.75);
+}
+
+@keyframes orbit-sat {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* Comet — light theme only, crosses sky occasionally */
+#comet {
+    position: absolute;
+    top: 95px;
+    left: 635px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(255, 255, 245, 1);
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    /* tail: box-shadows fading upper-right (opposite to motion direction) */
+    box-shadow:
+        0 0 8px 3px rgba(255, 240, 160, 0.9),
+        9px -7px 5px rgba(255, 252, 210, 0.55),
+        20px -15px 7px rgba(255, 252, 210, 0.35),
+        34px -25px 9px rgba(255, 252, 210, 0.2),
+        50px -37px 11px rgba(255, 252, 210, 0.09),
+        68px -50px 14px rgba(255, 252, 210, 0.03);
+    animation: comet-fly 16s ease-in-out infinite;
+    animation-delay: -3s;
+}
+
+[data-theme="dark"] #comet {
+    animation: none;
+}
+
+@keyframes comet-fly {
+    0%   { opacity: 0; transform: translate(0, 0); }
+    4%   { opacity: 1; }
+    22%  { opacity: 0; transform: translate(-310px, 225px); }
+    100% { opacity: 0; transform: translate(-310px, 225px); }
 }
 
 /*
@@ -313,6 +384,20 @@ a:hover {
 
     #header h1 {
         font-size: 1.6em;
+    }
+
+    #sat-orbit {
+        left: 160px;
+        top: 390px;
+    }
+
+    #satellite {
+        transform: translate(188px, -2px);
+    }
+
+    #comet {
+        top: 70px;
+        left: 270px;
     }
 }
 
