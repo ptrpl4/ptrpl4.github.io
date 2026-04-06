@@ -400,6 +400,27 @@ a:hover {
     opacity: 0.9;
 }
 
+/* Short viewports — lift planet by shrinking .space height */
+@media screen and (max-height: 720px) and (min-width: 501px) {
+    .space {
+        height: 580px;
+    }
+
+    #sat-orbit {
+        top: 390px; /* 580 - 380/2 */
+    }
+}
+
+@media screen and (max-height: 600px) and (min-width: 501px) {
+    .space {
+        height: 480px;
+    }
+
+    #sat-orbit {
+        top: 290px; /* 480 - 380/2 */
+    }
+}
+
 /* Responsive */
 @media screen and (max-width: 500px) {
     body {
