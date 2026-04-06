@@ -426,7 +426,7 @@ a:hover {
     }
 
     #satellite {
-        transform: translate(145px, -2px); /* max right: 160+145=305px < 320px */
+        transform: translate(165px, -2px); /* orbit > Earth radius (150px); right: 160+165=325px, within 360px+ viewports */
     }
 
     #comet {
@@ -451,7 +451,7 @@ a:hover {
     }
 
     #satellite {
-        transform: translate(128px, -2px); /* max right: 150+128=278px < 300px */
+        transform: translate(155px, -2px); /* orbit > Earth radius (140px); right: 150+155=305px, within 360px viewports */
     }
 
     #comet {

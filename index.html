@@ -169,8 +169,11 @@
                     var ey = cRect.top  - wRect.top  + cRect.height / 2;
                     var er = cRect.width / 2;
 
-                    var angle = (Math.random() * 140 - 70) * Math.PI / 180;
                     var dist  = er * 1.45 + Math.random() * er * 0.15;
+                    var skyR  = el.offsetWidth / 2 || 32;
+                    var maxX  = wRect.width / 2 - skyR - 8;
+                    var maxAngle = Math.min(70 * Math.PI / 180, Math.asin(Math.min(0.99, maxX / dist)));
+                    var angle = (Math.random() * 2 - 1) * maxAngle;
                     var x = ex + dist * Math.sin(angle);
                     var y = ey - dist * Math.cos(angle);
 
