@@ -8,7 +8,8 @@
             content="Personal website of Pyotr Void, Software Engineer"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#000000" />
+        <meta name="theme-color" content="#0a0e18" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#7aaac8" media="(prefers-color-scheme: light)" />
         <meta name="color-scheme" content="dark light" />
 
         <!-- Open Graph -->
@@ -26,7 +27,7 @@
         <link rel="apple-touch-icon" href="assets/favicons/apple-touch-icon.png" />
         <link rel="manifest" href="assets/favicons/site.webmanifest" />
 
-        <link rel="stylesheet" href="assets/css/main.css?v=2" />
+        <link rel="stylesheet" href="assets/css/main.css?v=3" />
 
         <script>
             // Restore saved theme before paint
@@ -190,6 +191,17 @@
                 }
 
                 placeSkyObject(false);
+
+                // .space changes size on resize / device rotation, which would
+                // strand the sky object at stale pixel coordinates — possibly
+                // over Earth, where the crescent overlay stops matching --bg.
+                var resizeTimer;
+                window.addEventListener("resize", function () {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(function () {
+                        placeSkyObject(false);
+                    }, 150);
+                });
 
                 document.getElementById("theme-toggle").addEventListener("click", function () {
                     var html = document.documentElement;

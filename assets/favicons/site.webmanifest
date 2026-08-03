@@ -4,8 +4,8 @@
   "description": "Personal website of Pyotr Void, Software Engineer",
   "start_url": "/",
   "display": "standalone",
-  "theme_color": "#348cb2",
-  "background_color": "#348cb2",
+  "theme_color": "#0a0e18",
+  "background_color": "#0a0e18",
   "icons": [
     {
       "src": "web-app-manifest-192x192.png",

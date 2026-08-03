@@ -63,7 +63,7 @@ body {
     transition: background var(--animation-duration) ease,
         color var(--animation-duration) ease;
     -webkit-text-size-adjust: none;
-    min-width: 360px;
+    min-width: 320px;
 }
 
 ol,
@@ -82,6 +82,15 @@ a {
 
 a:hover {
     border-color: transparent;
+}
+
+/* Keyboard focus — `outline: 0` above only suppresses the pointer-driven ring */
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+    border-radius: 3px;
+    opacity: 1;
 }
 
 /* Animations */
@@ -251,6 +260,10 @@ a:hover {
 #sky-object {
     position: absolute;
     z-index: 3;
+    /* Fallback slot in the upper arc, used when JS is unavailable.
+       placeSkyObject() overrides both via inline styles. */
+    left: 50%;
+    top: 33%;
     border-radius: 50%;
     background: var(--sky-color);
     box-shadow: var(--sky-glow);
@@ -398,6 +411,21 @@ a:hover {
 
 #theme-toggle:hover {
     opacity: 0.9;
+}
+
+/*
+ * Reduced motion — every animation here ends on its resting frame
+ * (comet: opacity 0, satellite: full turn, fadeIn/slideUp: visible),
+ * so collapsing durations degrades cleanly to the static scene.
+ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }
 
 /* Short viewports — lift planet by shrinking .space height */

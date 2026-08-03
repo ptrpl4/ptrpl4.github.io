@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://ptrpl4.page/sitemap.xml
