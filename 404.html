@@ -5,8 +5,9 @@
         <title>Lost in space — ptrpl4</title>
         <meta name="description" content="Page not found" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#0a0e18" media="(prefers-color-scheme: dark)" />
-        <meta name="theme-color" content="#7aaac8" media="(prefers-color-scheme: light)" />
+        <!-- Kept in sync with the active theme by syncThemeColor(); not keyed
+             on prefers-color-scheme, since the toggle is what picks the theme. -->
+        <meta name="theme-color" content="#0a0e18" />
         <meta name="color-scheme" content="dark light" />
         <meta name="robots" content="noindex" />
 
@@ -15,7 +16,7 @@
         <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon.png" />
         <link rel="manifest" href="/assets/favicons/site.webmanifest" />
 
-        <link rel="stylesheet" href="/assets/css/main.css?v=3" />
+        <link rel="stylesheet" href="/assets/css/main.css?v=4" />
 
         <script>
             // Restore saved theme before paint
@@ -24,6 +25,14 @@
                 if (saved === "light" || saved === "dark") {
                     document.documentElement.setAttribute("data-theme", saved);
                 }
+
+                // Browser chrome follows the toggle, not the OS. Values mirror --bg.
+                var BG = { dark: "#0a0e18", light: "#7aaac8" };
+                window.syncThemeColor = function (theme) {
+                    var meta = document.querySelector('meta[name="theme-color"]');
+                    if (meta) meta.setAttribute("content", BG[theme] || BG.dark);
+                };
+                syncThemeColor(document.documentElement.getAttribute("data-theme"));
             })();
         </script>
 
@@ -63,6 +72,7 @@
                 var next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
                 html.setAttribute("data-theme", next);
                 localStorage.setItem("theme", next);
+                syncThemeColor(next);
             });
         </script>
     </body>

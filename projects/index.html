@@ -5,8 +5,10 @@
         <title>Projects — ptrpl4</title>
         <meta name="description" content="Projects by Pyotr Void" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#111c2e" media="(prefers-color-scheme: dark)" />
-        <meta name="theme-color" content="#7aaac8" media="(prefers-color-scheme: light)" />
+        <!-- Kept in sync with the active theme by syncThemeColor(); not keyed
+             on prefers-color-scheme, since the toggle is what picks the theme.
+             Dark value is this page's local --bg override, not the global one. -->
+        <meta name="theme-color" content="#111c2e" />
         <meta name="color-scheme" content="dark light" />
 
         <!-- Open Graph -->
@@ -23,7 +25,7 @@
         <link rel="apple-touch-icon" href="../assets/favicons/apple-touch-icon.png" />
         <link rel="manifest" href="../assets/favicons/site.webmanifest" />
 
-        <link rel="stylesheet" href="../assets/css/main.css?v=3" />
+        <link rel="stylesheet" href="../assets/css/main.css?v=4" />
 
         <script>
             (function () {
@@ -31,6 +33,14 @@
                 if (saved === "light" || saved === "dark") {
                     document.documentElement.setAttribute("data-theme", saved);
                 }
+
+                // Browser chrome follows the toggle, not the OS. Values mirror --bg.
+                var BG = { dark: "#111c2e", light: "#7aaac8" };
+                window.syncThemeColor = function (theme) {
+                    var meta = document.querySelector('meta[name="theme-color"]');
+                    if (meta) meta.setAttribute("content", BG[theme] || BG.dark);
+                };
+                syncThemeColor(document.documentElement.getAttribute("data-theme"));
             })();
         </script>
 
@@ -189,6 +199,7 @@
                 var next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
                 html.setAttribute("data-theme", next);
                 localStorage.setItem("theme", next);
+                syncThemeColor(next);
             });
         </script>
 
@@ -219,7 +230,10 @@
                     if (!url) return null;
                     var s = String(url).trim();
                     if (/^https?:\/\//i.test(s)) return s;
-                    if (/^[\w.-]+\.[a-z]{2,}(\/|$)/i.test(s)) return "https://" + s;
+                    // Bare host, optionally with port, then a path/query/fragment
+                    // or nothing. The lookahead is what rejects `foo.bar:evil` —
+                    // a scheme can only follow the TLD as `:<digits>`.
+                    if (/^[\w.-]+\.[a-z]{2,}(?::\d+)?(?=[/?#]|$)/i.test(s)) return "https://" + s;
                     return null;
                 }
 

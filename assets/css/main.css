@@ -381,6 +381,11 @@ button:focus-visible {
         transform var(--animation-duration) ease-in-out;
 }
 
+/* The icons are circles — keep the focus ring concentric with them */
+#header nav a:focus-visible {
+    border-radius: 50%;
+}
+
 #header nav a:hover svg {
     background-color: var(--icon-hover-bg);
     transform: scale(1.1);
@@ -500,7 +505,9 @@ button:focus-visible {
     }
 
     #satellite {
-        transform: translate(155px, -2px); /* orbit > Earth radius (140px); right: 150+155=305px, within 360px viewports */
+        /* orbit > Earth radius (140px). Body floor is 320px, so .space (300px)
+           sits at x=10px: 10 + 150 + 152 + 7 = 319px, no horizontal overflow. */
+        transform: translate(152px, -2px);
     }
 
     #comet {

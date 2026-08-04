@@ -8,8 +8,9 @@
             content="Personal website of Pyotr Void, Software Engineer"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#0a0e18" media="(prefers-color-scheme: dark)" />
-        <meta name="theme-color" content="#7aaac8" media="(prefers-color-scheme: light)" />
+        <!-- Kept in sync with the active theme by syncThemeColor(); not keyed
+             on prefers-color-scheme, since the toggle is what picks the theme. -->
+        <meta name="theme-color" content="#0a0e18" />
         <meta name="color-scheme" content="dark light" />
 
         <!-- Open Graph -->
@@ -27,7 +28,7 @@
         <link rel="apple-touch-icon" href="assets/favicons/apple-touch-icon.png" />
         <link rel="manifest" href="assets/favicons/site.webmanifest" />
 
-        <link rel="stylesheet" href="assets/css/main.css?v=3" />
+        <link rel="stylesheet" href="assets/css/main.css?v=4" />
 
         <script>
             // Restore saved theme before paint
@@ -36,6 +37,14 @@
                 if (saved === "light" || saved === "dark") {
                     document.documentElement.setAttribute("data-theme", saved);
                 }
+
+                // Browser chrome follows the toggle, not the OS. Values mirror --bg.
+                var BG = { dark: "#0a0e18", light: "#7aaac8" };
+                window.syncThemeColor = function (theme) {
+                    var meta = document.querySelector('meta[name="theme-color"]');
+                    if (meta) meta.setAttribute("content", BG[theme] || BG.dark);
+                };
+                syncThemeColor(document.documentElement.getAttribute("data-theme"));
             })();
         </script>
     </head>
@@ -158,7 +167,20 @@
 
                 // Place sun/moon in a random position in the upper arc above Earth.
                 // R is scaled to Earth's actual rendered radius so it works on all screen sizes.
-                function placeSkyObject(animate) {
+                //
+                // The two random draws are held across calls so a resize re-solves
+                // the same slot against the new geometry instead of teleporting the
+                // object elsewhere. `reroll` picks a new slot (on theme switch).
+                // angleSeed is a fraction of maxAngle, so the clamp still adapts.
+                var angleSeed = Math.random() * 2 - 1;
+                var distSeed  = Math.random();
+
+                function placeSkyObject(animate, reroll) {
+                    if (reroll) {
+                        angleSeed = Math.random() * 2 - 1;
+                        distSeed  = Math.random();
+                    }
+
                     var wrapper = document.querySelector(".space");
                     var circle  = document.querySelector(".circle");
                     var el      = document.getElementById("sky-object");
@@ -170,11 +192,11 @@
                     var ey = cRect.top  - wRect.top  + cRect.height / 2;
                     var er = cRect.width / 2;
 
-                    var dist  = er * 1.45 + Math.random() * er * 0.15;
+                    var dist  = er * 1.45 + distSeed * er * 0.15;
                     var skyR  = el.offsetWidth / 2 || 32;
                     var maxX  = wRect.width / 2 - skyR - 8;
                     var maxAngle = Math.min(70 * Math.PI / 180, Math.asin(Math.min(0.99, maxX / dist)));
-                    var angle = (Math.random() * 2 - 1) * maxAngle;
+                    var angle = angleSeed * maxAngle;
                     var x = ex + dist * Math.sin(angle);
                     var y = ey - dist * Math.cos(angle);
 
@@ -208,7 +230,8 @@
                     var next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
                     html.setAttribute("data-theme", next);
                     localStorage.setItem("theme", next);
-                    placeSkyObject(true);
+                    syncThemeColor(next);
+                    placeSkyObject(true, true);
                     if (next === "dark") setMoonPhase();
                 });
             })();
