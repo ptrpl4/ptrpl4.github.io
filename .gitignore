@@ -1,2 +1,7 @@
 .DS_Store
 CLAUDE.md
+
+# Local dev tooling. verify-docs.js checks CLAUDE.md, which is itself ignored,
+# so it stays local too. Ignored by name, not as `scripts/`, so a script that
+# does belong in the repo can still be committed alongside it.
+scripts/verify-docs.js

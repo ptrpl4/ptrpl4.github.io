@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <!-- Kept in sync with the active theme by syncThemeColor(); not keyed
              on prefers-color-scheme, since the toggle is what picks the theme.
-             Dark value is this page's local --bg override, not the global one. -->
+             Dark value is the text-page --bg from main.css, not the global one. -->
         <meta name="theme-color" content="#111c2e" />
         <meta name="color-scheme" content="dark light" />
 
@@ -25,7 +25,7 @@
         <link rel="apple-touch-icon" href="../assets/favicons/apple-touch-icon.png" />
         <link rel="manifest" href="../assets/favicons/site.webmanifest" />
 
-        <link rel="stylesheet" href="../assets/css/main.css?v=4" />
+        <link rel="stylesheet" href="../assets/css/main.css?v=8" />
 
         <script>
             (function () {
@@ -45,25 +45,8 @@
         </script>
 
         <style>
-            /*
-             * The global dark --bg is near-black — too dark for a text page.
-             * Must not include a bare `:root`: it ties with main.css's
-             * [data-theme="light"] on specificity and, being later in the
-             * cascade, would win in light mode too.
-             */
-            [data-theme="dark"] {
-                --bg: #111c2e;
-                --fg: #8eaac8;
-            }
-
-            body {
-                display: block;
-                overflow: auto;
-                min-height: 100%;
-                height: auto;
-                background-color: var(--bg);
-            }
-
+            /* The `text-page` body class in main.css carries the scroll fix and
+               the lighter dark --bg this page needs. Only page-local rules here. */
             #page {
                 max-width: 640px;
                 margin: 0 auto;
@@ -80,12 +63,6 @@
                 font-weight: 700;
                 letter-spacing: -0.03em;
                 line-height: 1;
-            }
-
-            #page header p {
-                margin-top: 0.5em;
-                font-size: 0.9em;
-                opacity: 0.6;
             }
 
             #page header a.back {
@@ -107,13 +84,16 @@
                 gap: 0.1em;
             }
 
+            /* Divider between items, not after the last one. A trailing
+               `border-bottom` + `:last-child` reset would still leave a rule
+               under the final repo, since the JS appends a #status footer
+               after it — so the rule goes on top of every item but the first. */
             .project-item {
                 padding: 1em 0;
-                border-bottom: solid 1px var(--border-subtle);
             }
 
-            .project-item:last-child {
-                border-bottom: none;
+            .project-item + .project-item {
+                border-top: solid 1px var(--border-subtle);
             }
 
             .project-name {
@@ -160,6 +140,29 @@
                 opacity: 0.6;
             }
 
+            .project-section {
+                margin-bottom: 2.5em;
+            }
+
+            .project-section:last-of-type {
+                margin-bottom: 0;
+            }
+
+            .section-title {
+                font-size: 0.7em;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                opacity: 0.5;
+                margin-bottom: 0.5em;
+            }
+
+            .section-note {
+                font-size: 0.8em;
+                opacity: 0.5;
+                margin-bottom: 0.5em;
+            }
+
             @media screen and (max-width: 736px) {
                 #page {
                     padding: 2.5em 1.5em 3em;
@@ -171,19 +174,52 @@
             }
         </style>
     </head>
-    <body>
+    <body class="text-page">
         <button id="theme-toggle" aria-label="Toggle theme">◐</button>
 
         <div id="page">
             <header>
                 <a class="back" href="/">← ptrpl4.page</a>
                 <h1>Projects</h1>
-                <p>Public repositories on GitHub</p>
             </header>
 
-            <div id="project-list">
-                <p id="status">Loading…</p>
-            </div>
+            <!--
+                Apps — hand-maintained (they ship separately from their repos, and
+                the repos aren't necessarily public). Both are TestFlight beta only;
+                add an "App Store ↗" .app-link alongside each TestFlight one, and
+                drop the coming-soon badge, as each listing goes live.
+            -->
+            <section class="project-section">
+                <h2 class="section-title">Apps</h2>
+
+                <div class="project-item">
+                    <a class="project-name" href="/projects/clauss/">Clauss</a>
+                    <span class="coming-soon">coming soon</span>
+                    <p class="project-desc">Menu-bar manager for Claude Code sessions.</p>
+                    <div class="app-platforms">macOS</div>
+                    <div class="app-links">
+                        <a class="app-link" href="https://testflight.apple.com/join/cXZXyuve" target="_blank" rel="noopener">TestFlight ↗</a>
+                    </div>
+                </div>
+
+                <div class="project-item">
+                    <a class="project-name" href="/projects/figa/">FIGa</a>
+                    <span class="coming-soon">coming soon</span>
+                    <p class="project-desc">On-device network content filter — local DNS filtering.</p>
+                    <div class="app-platforms">iOS · iPadOS · macOS · tvOS</div>
+                    <div class="app-links">
+                        <a class="app-link" href="https://testflight.apple.com/join/xfRUWHhb" target="_blank" rel="noopener">TestFlight ↗</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="project-section">
+                <h2 class="section-title">Open source</h2>
+                <p class="section-note">Public repositories on GitHub</p>
+                <div id="project-list">
+                    <p id="status">Loading…</p>
+                </div>
+            </section>
 
             <noscript>
                 <p>

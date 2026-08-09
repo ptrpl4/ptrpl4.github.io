@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+    <head>
+        <meta charset="utf-8" />
+        <title>Clauss — ptrpl4</title>
+        <meta name="description" content="Clauss — menu-bar manager for Claude Code sessions (macOS)" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- Kept in sync with the active theme by syncThemeColor(); not keyed
+             on prefers-color-scheme, since the toggle is what picks the theme.
+             Dark value is the text-page --bg from main.css, not the global one. -->
+        <meta name="theme-color" content="#111c2e" />
+        <meta name="color-scheme" content="dark light" />
+
+        <!-- Open Graph -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://ptrpl4.page/projects/clauss/" />
+        <meta property="og:title" content="Clauss — ptrpl4" />
+        <meta property="og:description" content="Menu-bar manager for Claude Code sessions (macOS)" />
+        <meta property="og:image" content="https://ptrpl4.page/assets/favicons/web-app-manifest-512x512.png" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:creator" content="@ptrpl4" />
+
+        <link rel="icon" href="../../assets/favicons/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="../../assets/favicons/favicon.ico" />
+        <link rel="apple-touch-icon" href="../../assets/favicons/apple-touch-icon.png" />
+        <link rel="manifest" href="../../assets/favicons/site.webmanifest" />
+
+        <link rel="stylesheet" href="../../assets/css/main.css?v=8" />
+
+        <script>
+            (function () {
+                var saved = localStorage.getItem("theme");
+                if (saved === "light" || saved === "dark") {
+                    document.documentElement.setAttribute("data-theme", saved);
+                }
+
+                // Browser chrome follows the toggle, not the OS. Values mirror --bg.
+                var BG = { dark: "#111c2e", light: "#7aaac8" };
+                window.syncThemeColor = function (theme) {
+                    var meta = document.querySelector('meta[name="theme-color"]');
+                    if (meta) meta.setAttribute("content", BG[theme] || BG.dark);
+                };
+                syncThemeColor(document.documentElement.getAttribute("data-theme"));
+            })();
+        </script>
+    </head>
+    <body class="text-page">
+        <button id="theme-toggle" aria-label="Toggle theme">◐</button>
+
+        <main class="app-page">
+            <a class="back" href="/projects">← projects</a>
+
+            <div class="app-title">
+                <h1>Clauss</h1>
+                <span class="coming-soon">coming soon</span>
+            </div>
+            <p class="desc">Menu-bar manager for Claude Code sessions.</p>
+            <p class="app-platforms">macOS</p>
+
+            <!-- Beta only for now. Add the App Store listing link here, and drop
+                 the coming-soon badge above, once the app is approved. -->
+            <div class="app-links">
+                <a class="app-link" href="https://testflight.apple.com/join/cXZXyuve" target="_blank" rel="noopener">TestFlight ↗</a>
+            </div>
+
+            <!-- Terms of Use points at Apple's standard Licensed Application EULA,
+                 which governs the app unless a custom EULA is supplied. -->
+            <nav class="legal" aria-label="Legal">
+                <a href="/projects/clauss/privacy/">Privacy Policy</a>
+                <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" rel="noopener">Terms of Use</a>
+            </nav>
+        </main>
+
+        <script>
+            document.getElementById("theme-toggle").addEventListener("click", function () {
+                var html = document.documentElement;
+                var next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
+                html.setAttribute("data-theme", next);
+                localStorage.setItem("theme", next);
+                syncThemeColor(next);
+            });
+        </script>
+    </body>
+</html>

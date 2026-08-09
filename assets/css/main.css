@@ -396,6 +396,239 @@ button:focus-visible {
     transform: scale(0.95);
 }
 
+/*
+ * Text pages — /projects/ and everything under it.
+ *
+ * `body` above is a flex container with `height: 100%` and
+ * `align-items: center`, sized for the landing page's fixed scene. A flex item
+ * taller than that container overflows it equally top and bottom, and the top
+ * overflow sits at a negative scroll offset — unreachable. Any page whose
+ * content can outgrow the viewport must therefore opt out.
+ */
+body.text-page {
+    display: block;
+    overflow: auto;
+    height: auto;
+    min-height: 100%;
+}
+
+/*
+ * The global dark --bg is near-black — too dark behind a page of body text.
+ * Scoped to [data-theme="dark"] only: a bare :root here would tie with
+ * [data-theme="light"] on specificity and, sitting later in the cascade, win
+ * in light mode too. Mirrored by each text page's syncThemeColor() BG map.
+ */
+[data-theme="dark"] body.text-page {
+    --bg: #111c2e;
+    --fg: #8eaac8;
+}
+
+/* Per-app landing page — /projects/<app>/ */
+.app-page {
+    max-width: 30em;
+    margin: 0 auto;
+    padding: 3em 2em;
+    text-align: center;
+    animation: slideUp 0.6s 0.1s both;
+}
+
+/* The back link gets its own line, hugging the left edge, while the rest of the
+   page stays centred. `display: block` is load-bearing: `a.back` is otherwise
+   inline-block and would share a line box with the inline-block `.app-title`
+   below. `fit-content` keeps the box — and its focus ring — around the text. */
+.app-page a.back {
+    display: block;
+    width: fit-content;
+    text-align: left;
+}
+
+/* Shrink-wraps the <h1>, so the parent's `text-align: center` centres the name
+   itself. The badge is then taken out of flow against this box, which is what
+   keeps the name centred on the page rather than centring the name+badge pair. */
+.app-title {
+    position: relative;
+    display: inline-block;
+}
+
+.app-page h1 {
+    font-size: 1.9em;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+}
+
+/* Below the name by default: at narrow widths there is no room beside it, and
+   an out-of-flow badge would reach past the viewport edge and force horizontal
+   scroll. Restored to the right of the name once there is room, below. */
+.app-title .coming-soon {
+    display: inline-block;
+    margin-top: 0.9em;
+}
+
+/* Room to sit beside the name: park it just past the right edge of `.app-title`
+   and out of flow, so it cannot pull the name off centre. Paired with the
+   ≤500px breakpoint that drops the body font — see Responsive below. */
+@media screen and (min-width: 501px) {
+    .app-title .coming-soon {
+        position: absolute;
+        left: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-top: 0;
+        margin-left: 0.75em;
+    }
+}
+
+.app-page .desc {
+    font-size: 0.82em;
+    opacity: 0.7;
+    margin-top: 1em;
+    line-height: 1.6;
+}
+
+/* Back link, shared by the app and privacy pages. `.app-page a.back` above
+   overrides `display` — it wins on specificity (0,2,1 vs 0,1,1), not order. */
+a.back {
+    display: inline-block;
+    font-size: 0.7em;
+    opacity: 0.55;
+    border-bottom: none;
+    margin-bottom: 2.5em;
+    letter-spacing: 0;
+}
+
+a.back:hover {
+    opacity: 1;
+}
+
+/* App metadata and links — shared by the projects list and the app pages */
+.app-platforms {
+    font-size: 0.72em;
+    opacity: 0.5;
+    margin-top: 0.35em;
+}
+
+.app-page .app-platforms {
+    font-size: 0.68em;
+    margin-top: 0.7em;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.app-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    margin-top: 0.5em;
+}
+
+.app-page .app-links {
+    justify-content: center;
+    align-items: center;
+    gap: 1.3em;
+    margin-top: 2em;
+}
+
+.app-link {
+    font-size: 0.78em;
+    opacity: 0.85;
+    border-bottom: solid 1px var(--border-medium);
+    transition: border-color var(--animation-duration) ease-in-out;
+}
+
+.app-page .app-link {
+    font-size: 0.8em;
+    opacity: 0.9;
+}
+
+.app-link:hover {
+    opacity: 1;
+    border-color: transparent;
+}
+
+.coming-soon {
+    font-size: 0.68em;
+    opacity: 0.55;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border: solid 1px var(--border-subtle);
+    border-radius: 4px;
+    padding: 0.15em 0.5em;
+    white-space: nowrap;
+}
+
+/* In the projects list the badge trails the name inline, in normal flow */
+.project-name + .coming-soon {
+    margin-left: 0.75em;
+    vertical-align: middle;
+}
+
+/* Legal footer on the app pages */
+.legal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.3em;
+    margin-top: 3.5em;
+    font-size: 0.66em;
+    opacity: 0.45;
+}
+
+.legal a {
+    border-bottom: dotted 1px;
+}
+
+.legal a:hover {
+    opacity: 1;
+    border-color: transparent;
+}
+
+/* Privacy policy — /projects/<app>/privacy/ */
+.legal-page {
+    max-width: 34em;
+    margin: 0 auto;
+    padding: 3.5em 2em 4em;
+    text-align: left;
+    animation: fadeIn 0.5s forwards;
+}
+
+.legal-page h1 {
+    font-size: 1.5em;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+.legal-page .meta {
+    font-size: 0.68em;
+    opacity: 0.5;
+    margin-top: 0.6em;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.legal-page h2 {
+    font-size: 0.92em;
+    font-weight: 600;
+    margin-top: 2em;
+    opacity: 0.9;
+}
+
+.legal-page p {
+    font-size: 0.82em;
+    opacity: 0.75;
+    margin-top: 0.7em;
+    line-height: 1.7;
+}
+
+.legal-page a.inline {
+    border-bottom: dotted 1px;
+}
+
+.legal-page a.inline:hover {
+    border-color: transparent;
+}
+
 /* Theme toggle */
 #theme-toggle {
     position: fixed;

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+    <head>
+        <meta charset="utf-8" />
+        <title>FIGa — Privacy Policy</title>
+        <meta name="description" content="Privacy policy for FIGa" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- Kept in sync with the active theme by syncThemeColor(); not keyed
+             on prefers-color-scheme, since the toggle is what picks the theme.
+             Dark value is the text-page --bg from main.css, not the global one. -->
+        <meta name="theme-color" content="#111c2e" />
+        <meta name="color-scheme" content="dark light" />
+        <meta name="robots" content="noindex" />
+
+        <link rel="icon" href="../../../assets/favicons/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="../../../assets/favicons/favicon.ico" />
+        <link rel="apple-touch-icon" href="../../../assets/favicons/apple-touch-icon.png" />
+        <link rel="manifest" href="../../../assets/favicons/site.webmanifest" />
+
+        <link rel="stylesheet" href="../../../assets/css/main.css?v=8" />
+
+        <script>
+            (function () {
+                var saved = localStorage.getItem("theme");
+                if (saved === "light" || saved === "dark") {
+                    document.documentElement.setAttribute("data-theme", saved);
+                }
+
+                // Browser chrome follows the toggle, not the OS. Values mirror --bg.
+                var BG = { dark: "#111c2e", light: "#7aaac8" };
+                window.syncThemeColor = function (theme) {
+                    var meta = document.querySelector('meta[name="theme-color"]');
+                    if (meta) meta.setAttribute("content", BG[theme] || BG.dark);
+                };
+                syncThemeColor(document.documentElement.getAttribute("data-theme"));
+            })();
+        </script>
+    </head>
+    <body class="text-page">
+        <button id="theme-toggle" aria-label="Toggle theme">◐</button>
+
+        <main class="legal-page">
+            <a class="back" href="/projects/figa/">← FIGa</a>
+
+            <h1>Privacy Policy</h1>
+            <p class="meta">FIGa · Last updated 9 August 2026</p>
+
+            <p>
+                FIGa does not collect, store, transmit, or share any personal data. It has no
+                analytics, no tracking, no advertising, and no third-party SDKs.
+            </p>
+
+            <h2>What the app accesses</h2>
+            <p>
+                FIGa filters network content entirely on your device using a local DNS filter. DNS
+                queries are evaluated on-device against local blocklists; they are not logged,
+                transmitted, or shared, and no browsing history leaves the device. App settings and
+                blocklists are stored locally.
+            </p>
+
+            <h2>Data you provide</h2>
+            <p>
+                FIGa has no account, sign-in, or server. It does not ask for or receive any personal
+                information.
+            </p>
+
+            <h2>Third parties</h2>
+            <p>No data is shared with third parties, because none is collected.</p>
+
+            <h2>Changes</h2>
+            <p>
+                If this policy changes, the updated version will be posted on this page with a new
+                date.
+            </p>
+
+            <h2>Contact</h2>
+            <p>
+                Questions about privacy:
+                <a class="inline" href="mailto:inbox+figa@ptrpl4.page">inbox+figa@ptrpl4.page</a>
+            </p>
+        </main>
+
+        <script>
+            document.getElementById("theme-toggle").addEventListener("click", function () {
+                var html = document.documentElement;
+                var next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
+                html.setAttribute("data-theme", next);
+                localStorage.setItem("theme", next);
+                syncThemeColor(next);
+            });
+        </script>
+    </body>
+</html>
