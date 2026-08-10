@@ -413,14 +413,27 @@ body.text-page {
 }
 
 /*
- * The global dark --bg is near-black — too dark behind a page of body text.
- * Scoped to [data-theme="dark"] only: a bare :root here would tie with
- * [data-theme="light"] on specificity and, sitting later in the cascade, win
- * in light mode too. Mirrored by each text page's syncThemeColor() BG map.
+ * Text-page palettes. Both themes repaint here, because the global pairs are
+ * tuned for the landing page — large type over a decorative scene — and a page
+ * of small body text needs contrast headroom the fades below can spend.
+ *
+ * Global light is #1a3050 on #7aaac8: 5.32:1, barely over the 4.5 AA floor at
+ * full strength, so opacity 0.75 dropped it to 3.4. These pairs start at
+ * 8.2:1 (light) and 8.3:1 (dark), which keeps the 0.75 tier at 4.96 / 5.26.
+ *
+ * Each is scoped to its own [data-theme] and nothing else. A bare :root in
+ * either selector list would tie with the other theme's [data-theme] rule on
+ * specificity and, sitting later in the cascade, win in both modes — silently
+ * disabling the toggle. Mirrored by each text page's syncThemeColor() BG map.
  */
 [data-theme="dark"] body.text-page {
     --bg: #111c2e;
-    --fg: #8eaac8;
+    --fg: #9db8d4;
+}
+
+[data-theme="light"] body.text-page {
+    --bg: #8ab6d0;
+    --fg: #0a1828;
 }
 
 /*
@@ -452,9 +465,12 @@ body.text-page {
 }
 
 /* In the bar the toggle is a flex item, not pinned to the viewport corner.
-   index.html and 404.html have no bar and keep the fixed default below. */
+   index.html and 404.html have no bar and keep the fixed default below —
+   including its lighter 0.45, which suits a glyph floating over the scene but
+   not one sitting in a row of text. */
 .page-bar #theme-toggle {
     position: static;
+    opacity: 0.75;
 }
 
 /* One heading size for every text page */
@@ -486,9 +502,19 @@ body.text-page {
     margin-top: 0.9em;
 }
 
+/*
+ * Two fade tiers on the text pages, and no others: 0.85 for text that reads as
+ * body copy, 0.75 for anything secondary. 0.75 is the floor — below it the
+ * muted colour drops under 4.5:1 against either text-page --bg, and every one
+ * of these elements is under 14pt once the ≤500px base applies.
+ *
+ * Hierarchy is carried by size, weight, case and letter-spacing instead. The
+ * old 0.45–0.65 fades were doing that job a second time, at the cost of
+ * legibility: .project-desc sat at 2.83:1 in light mode.
+ */
 .app-page .desc {
     font-size: 0.82em;
-    opacity: 0.7;
+    opacity: 0.75;
     margin-top: 1em;
     line-height: 1.6;
 }
@@ -498,7 +524,7 @@ body.text-page {
    below it. At 0.7em this rendered ~9.8pt once the ≤500px base kicked in. */
 a.back {
     font-size: 0.8em;
-    opacity: 0.55;
+    opacity: 0.75;
     border-bottom: none;
     letter-spacing: 0;
 }
@@ -510,7 +536,7 @@ a.back:hover {
 /* App metadata and links — shared by the projects list and the app pages */
 .app-platforms {
     font-size: 0.72em;
-    opacity: 0.5;
+    opacity: 0.75;
     margin-top: 0.35em;
 }
 
@@ -554,7 +580,7 @@ a.back:hover {
 
 .coming-soon {
     font-size: 0.68em;
-    opacity: 0.55;
+    opacity: 0.75;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     border: solid 1px var(--border-subtle);
@@ -577,7 +603,7 @@ a.back:hover {
     gap: 1.3em;
     margin-top: 3.5em;
     font-size: 0.66em;
-    opacity: 0.45;
+    opacity: 0.75;
 }
 
 .legal a {
@@ -596,7 +622,7 @@ a.back:hover {
 
 .legal-page .meta {
     font-size: 0.68em;
-    opacity: 0.5;
+    opacity: 0.75;
     margin-top: 0.6em;
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -686,6 +712,16 @@ a.back:hover {
 @media screen and (max-width: 500px) {
     body {
         font-size: 14pt;
+    }
+
+    /*
+     * The base 300 is a thin stroke once 17pt drops to 14pt and the fades below
+     * take another bite — the point at which the text pages became hard to read
+     * on a phone while the desktop rendering still looked fine. Scoped to text
+     * pages: the landing page is large type and keeps the lighter weight.
+     */
+    body.text-page {
+        font-weight: 400;
     }
 
     #page,

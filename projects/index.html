@@ -25,7 +25,7 @@
         <link rel="apple-touch-icon" href="../assets/favicons/apple-touch-icon.png" />
         <link rel="manifest" href="../assets/favicons/site.webmanifest" />
 
-        <link rel="stylesheet" href="../assets/css/main.css?v=10" />
+        <link rel="stylesheet" href="../assets/css/main.css?v=11" />
 
         <script>
             (function () {
@@ -35,7 +35,7 @@
                 }
 
                 // Browser chrome follows the toggle, not the OS. Values mirror --bg.
-                var BG = { dark: "#111c2e", light: "#7aaac8" };
+                var BG = { dark: "#111c2e", light: "#8ab6d0" };
                 window.syncThemeColor = function (theme) {
                     var meta = document.querySelector('meta[name="theme-color"]');
                     if (meta) meta.setAttribute("content", BG[theme] || BG.dark);
@@ -94,9 +94,11 @@
                 border-color: transparent;
             }
 
+            /* 0.75 is the muted floor set in main.css — see the tier note
+               there. Anything lower drops this text under 4.5:1. */
             .project-desc {
                 font-size: 0.82em;
-                opacity: 0.65;
+                opacity: 0.75;
                 margin-top: 0.25em;
                 line-height: 1.4;
             }
@@ -106,12 +108,12 @@
                 gap: 1em;
                 margin-top: 0.4em;
                 font-size: 0.75em;
-                opacity: 0.5;
+                opacity: 0.75;
             }
 
             #status {
                 font-size: 0.9em;
-                opacity: 0.6;
+                opacity: 0.75;
             }
 
             .project-section {
@@ -127,13 +129,13 @@
                 font-weight: 600;
                 text-transform: uppercase;
                 letter-spacing: 0.1em;
-                opacity: 0.5;
+                opacity: 0.75;
                 margin-bottom: 0.5em;
             }
 
             .section-note {
                 font-size: 0.8em;
-                opacity: 0.5;
+                opacity: 0.75;
                 margin-bottom: 0.5em;
             }
 
