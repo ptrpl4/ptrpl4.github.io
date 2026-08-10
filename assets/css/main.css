@@ -43,14 +43,15 @@
 
 /* Base */
 html {
-    text-rendering: optimizeSpeed;
     height: 100%;
 }
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
         Helvetica, Arial, sans-serif;
-    font-size: 17pt;
+    /* rem, not pt: an absolute print unit ignores the reader's browser
+       font-size setting. 1.4167rem is 17pt exactly at a 16px root. */
+    font-size: 1.4167rem;
     font-weight: 300;
     line-height: 1.75;
     letter-spacing: -0.025em;
@@ -118,7 +119,7 @@ button:focus-visible {
     animation: fadeIn 0.6s ease forwards;
 }
 
-/* Circle (Earth) — texture rotates via background-position animation */
+/* Circle (Earth) — the page's one solid object; clouds come from ::before */
 .circle {
     position: absolute;
     left: 50%;
@@ -268,7 +269,6 @@ button:focus-visible {
 /*
  * Sky object — sun (light theme) or moon (dark theme).
  * Positioned via JS in the upper arc; transitions on reposition.
- * Center of .space is (380, 350); sky object is always in the upper half.
  */
 #sky-object {
     position: absolute;
@@ -426,7 +426,6 @@ button:focus-visible {
  */
 body.text-page {
     display: block;
-    overflow: auto;
     height: auto;
     min-height: 100%;
 }
@@ -507,15 +506,11 @@ body.text-page {
     text-align: center;
 }
 
-/* Name and badge stack, both centred by `.app-page`'s `text-align: center`.
-   The <h1> is a block, so the badge after it starts a new line on its own. */
-.app-title {
-    display: block;
-}
-
-/* Under the name at every width. It sat beside the name for one revision, which
-   needed absolute positioning to keep the name itself on the page centre line
-   and still overflowed a 320px viewport. Below, neither problem exists. */
+/* Under the name at every width — `.app-title`'s <h1> is a block, so the badge
+   starts its own line, and `.app-page`'s `text-align: center` centres both. It
+   sat beside the name for one revision, which needed absolute positioning to
+   keep the name itself on the page centre line and still overflowed a 320px
+   viewport. Below, neither problem exists. */
 .app-title .coming-soon {
     display: inline-block;
     margin-top: 0.9em;
@@ -744,11 +739,12 @@ a.back:hover {
 /* Responsive */
 @media screen and (max-width: 500px) {
     body {
-        font-size: 14pt;
+        /* 14pt at a 16px root — see the base rule for why this is not pt. */
+        font-size: 1.1667rem;
     }
 
     /*
-     * The base 300 is a thin stroke once 17pt drops to 14pt and the fades below
+     * The base 300 is a thin stroke once the base size drops a tier and the fades below
      * take another bite — the point at which the text pages became hard to read
      * on a phone while the desktop rendering still looked fine. Scoped to text
      * pages: the landing page is large type and keeps the lighter weight.

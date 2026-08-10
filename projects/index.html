@@ -25,7 +25,13 @@
         <link rel="apple-touch-icon" href="../assets/favicons/apple-touch-icon.png" />
         <link rel="manifest" href="../assets/favicons/site.webmanifest" />
 
-        <link rel="stylesheet" href="../assets/css/main.css?v=12" />
+        <link rel="canonical" href="https://ptrpl4.page/projects/" />
+
+        <!-- The repo list is this page's main content, so overlap DNS + TLS
+             with parse rather than paying for it after the script runs. -->
+        <link rel="preconnect" href="https://api.github.com" />
+
+        <link rel="stylesheet" href="../assets/css/main.css?v=13" />
 
         <script>
             (function () {
@@ -41,6 +47,18 @@
                     if (meta) meta.setAttribute("content", BG[theme] || BG.dark);
                 };
                 syncThemeColor(document.documentElement.getAttribute("data-theme"));
+
+                // Delegated on document so this can live in <head>, where the
+                // pre-paint work already has to happen — #theme-toggle is not
+                // parsed yet.
+                document.addEventListener("click", function (e) {
+                    if (!e.target || e.target.id !== "theme-toggle") return;
+                    var html = document.documentElement;
+                    var next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
+                    html.setAttribute("data-theme", next);
+                    localStorage.setItem("theme", next);
+                    syncThemeColor(next);
+                });
             })();
         </script>
 
@@ -142,7 +160,7 @@
         </style>
     </head>
     <body class="text-page">
-        <div id="page">
+        <main id="page">
             <div class="page-bar">
                 <a class="back" href="/">← ptrpl4.page</a>
                 <button id="theme-toggle" aria-label="Toggle theme">◐</button>
@@ -196,17 +214,7 @@
                     <a href="https://github.com/ptrpl4">GitHub</a>.
                 </p>
             </noscript>
-        </div>
-
-        <script>
-            document.getElementById("theme-toggle").addEventListener("click", function () {
-                var html = document.documentElement;
-                var next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
-                html.setAttribute("data-theme", next);
-                localStorage.setItem("theme", next);
-                syncThemeColor(next);
-            });
-        </script>
+        </main>
 
         <script>
             (function () {

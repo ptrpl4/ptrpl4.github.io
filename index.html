@@ -15,7 +15,7 @@
 
         <!-- Open Graph -->
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://ptrpl4.page" />
+        <meta property="og:url" content="https://ptrpl4.page/" />
         <meta property="og:title" content="Pyotr Void — Software Engineer" />
         <meta property="og:description" content="Personal website of Pyotr Void, Software Engineer" />
         <meta property="og:image" content="https://ptrpl4.page/assets/favicons/web-app-manifest-512x512.png" />
@@ -28,7 +28,9 @@
         <link rel="apple-touch-icon" href="assets/favicons/apple-touch-icon.png" />
         <link rel="manifest" href="assets/favicons/site.webmanifest" />
 
-        <link rel="stylesheet" href="assets/css/main.css?v=12" />
+        <link rel="canonical" href="https://ptrpl4.page/" />
+
+        <link rel="stylesheet" href="assets/css/main.css?v=13" />
 
         <script>
             // Restore saved theme before paint
@@ -45,13 +47,27 @@
                     if (meta) meta.setAttribute("content", BG[theme] || BG.dark);
                 };
                 syncThemeColor(document.documentElement.getAttribute("data-theme"));
+
+                // Delegated on document so this can live in <head>, where the
+                // pre-paint work already has to happen — #theme-toggle is not
+                // parsed yet. Pages with extra work to do on a switch (the
+                // landing page repositions the sky object) set onThemeChange.
+                document.addEventListener("click", function (e) {
+                    if (!e.target || e.target.id !== "theme-toggle") return;
+                    var html = document.documentElement;
+                    var next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
+                    html.setAttribute("data-theme", next);
+                    localStorage.setItem("theme", next);
+                    syncThemeColor(next);
+                    if (window.onThemeChange) window.onThemeChange(next);
+                });
             })();
         </script>
     </head>
     <body>
         <button id="theme-toggle" aria-label="Toggle theme">◐</button>
 
-        <div class="space">
+        <main class="space">
             <div id="stars"></div>
             <div id="sat-orbit"><div id="satellite"></div></div>
             <div id="comet"></div>
@@ -64,7 +80,7 @@
                         Software Engineer &nbsp;&bull;&nbsp; Human<br>
                         Never asked for this
                     </p>
-                    <a class="page-links" href="/projects">projects</a>
+                    <a class="page-links" href="/projects/">projects</a>
 
                     <nav aria-label="Social media links">
                         <ul>
@@ -125,7 +141,7 @@
                     </nav>
                 </header>
             </div>
-        </div>
+        </main>
 
         <script>
             (function () {
@@ -225,15 +241,12 @@
                     }, 150);
                 });
 
-                document.getElementById("theme-toggle").addEventListener("click", function () {
-                    var html = document.documentElement;
-                    var next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
-                    html.setAttribute("data-theme", next);
-                    localStorage.setItem("theme", next);
-                    syncThemeColor(next);
+                // Runs after the head script's own toggle work. A theme switch
+                // is the one time the sky object rerolls to a new slot.
+                window.onThemeChange = function (next) {
                     placeSkyObject(true, true);
                     if (next === "dark") setMoonPhase();
-                });
+                };
             })();
         </script>
     </body>

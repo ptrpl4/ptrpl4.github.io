@@ -17,7 +17,7 @@
         <link rel="apple-touch-icon" href="../../../assets/favicons/apple-touch-icon.png" />
         <link rel="manifest" href="../../../assets/favicons/site.webmanifest" />
 
-        <link rel="stylesheet" href="../../../assets/css/main.css?v=12" />
+        <link rel="stylesheet" href="../../../assets/css/main.css?v=13" />
 
         <script>
             (function () {
@@ -33,6 +33,18 @@
                     if (meta) meta.setAttribute("content", BG[theme] || BG.dark);
                 };
                 syncThemeColor(document.documentElement.getAttribute("data-theme"));
+
+                // Delegated on document so this can live in <head>, where the
+                // pre-paint work already has to happen — #theme-toggle is not
+                // parsed yet.
+                document.addEventListener("click", function (e) {
+                    if (!e.target || e.target.id !== "theme-toggle") return;
+                    var html = document.documentElement;
+                    var next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
+                    html.setAttribute("data-theme", next);
+                    localStorage.setItem("theme", next);
+                    syncThemeColor(next);
+                });
             })();
         </script>
     </head>
@@ -85,16 +97,6 @@
                 <noscript>inbox+figa (at) ptrpl4 (dot) page</noscript>
             </p>
         </main>
-
-        <script>
-            document.getElementById("theme-toggle").addEventListener("click", function () {
-                var html = document.documentElement;
-                var next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
-                html.setAttribute("data-theme", next);
-                localStorage.setItem("theme", next);
-                syncThemeColor(next);
-            });
-        </script>
 
         <script>
             // ROT13 is its own inverse, so the same pass encodes and decodes.

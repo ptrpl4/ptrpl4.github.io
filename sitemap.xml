@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- lastmod only: Google ignores <priority> and <changefreq> outright. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://ptrpl4.page/</loc>
-        <priority>1.0</priority>
+        <lastmod>2026-08-11</lastmod>
     </url>
     <url>
         <loc>https://ptrpl4.page/projects/</loc>
-        <priority>0.8</priority>
+        <lastmod>2026-08-11</lastmod>
     </url>
     <url>
         <loc>https://ptrpl4.page/projects/clauss/</loc>
-        <priority>0.6</priority>
+        <lastmod>2026-08-11</lastmod>
     </url>
     <url>
         <loc>https://ptrpl4.page/projects/figa/</loc>
-        <priority>0.6</priority>
+        <lastmod>2026-08-11</lastmod>
     </url>
 </urlset>
