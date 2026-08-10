@@ -423,60 +423,67 @@ body.text-page {
     --fg: #8eaac8;
 }
 
-/* Per-app landing page — /projects/<app>/ */
-.app-page {
-    max-width: 30em;
+/*
+ * Shared text column. One width and one padding across the projects list, the
+ * app pages and the privacy pages, so navigating between them does not shift
+ * the measure. `#page` carries an id (1,0,0) but nothing here competes with it.
+ */
+#page,
+.app-page,
+.legal-page {
+    max-width: 32em;
     margin: 0 auto;
-    padding: 3em 2em;
-    text-align: center;
-    animation: slideUp 0.6s 0.1s both;
+    padding: 3em 2em 4em;
+    animation: fadeIn 0.5s forwards;
 }
 
-/* The back link gets its own line, hugging the left edge, while the rest of the
-   page stays centred. `display: block` is load-bearing: `a.back` is otherwise
-   inline-block and would share a line box with the inline-block `.app-title`
-   below. `fit-content` keeps the box — and its focus ring — around the text. */
-.app-page a.back {
-    display: block;
-    width: fit-content;
-    text-align: left;
+/*
+ * Top bar: back link left, theme toggle right, on one line. It sits inside the
+ * text column rather than the viewport, so it picks up that column's width and
+ * padding and the toggle lands on the same line as the back link at every
+ * breakpoint — no separate positioning per page.
+ */
+.page-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1em;
+    margin-bottom: 2.5em;
 }
 
-/* Shrink-wraps the <h1>, so the parent's `text-align: center` centres the name
-   itself. The badge is then taken out of flow against this box, which is what
-   keeps the name centred on the page rather than centring the name+badge pair. */
-.app-title {
-    position: relative;
-    display: inline-block;
+/* In the bar the toggle is a flex item, not pinned to the viewport corner.
+   index.html and 404.html have no bar and keep the fixed default below. */
+.page-bar #theme-toggle {
+    position: static;
 }
 
-.app-page h1 {
+/* One heading size for every text page */
+#page header h1,
+.app-page h1,
+.legal-page h1 {
     font-size: 1.9em;
     font-weight: 700;
     letter-spacing: -0.03em;
-    line-height: 1;
+    line-height: 1.1;
 }
 
-/* Below the name by default: at narrow widths there is no room beside it, and
-   an out-of-flow badge would reach past the viewport edge and force horizontal
-   scroll. Restored to the right of the name once there is room, below. */
+/* Per-app landing page — /projects/<app>/ */
+.app-page {
+    text-align: center;
+}
+
+/* Name and badge stack, both centred by `.app-page`'s `text-align: center`.
+   The <h1> is a block, so the badge after it starts a new line on its own. */
+.app-title {
+    display: block;
+}
+
+/* Under the name at every width. It sat beside the name for one revision, which
+   needed absolute positioning to keep the name itself on the page centre line
+   and still overflowed a 320px viewport. Below, neither problem exists. */
 .app-title .coming-soon {
     display: inline-block;
     margin-top: 0.9em;
-}
-
-/* Room to sit beside the name: park it just past the right edge of `.app-title`
-   and out of flow, so it cannot pull the name off centre. Paired with the
-   ≤500px breakpoint that drops the body font — see Responsive below. */
-@media screen and (min-width: 501px) {
-    .app-title .coming-soon {
-        position: absolute;
-        left: 100%;
-        top: 50%;
-        transform: translateY(-50%);
-        margin-top: 0;
-        margin-left: 0.75em;
-    }
 }
 
 .app-page .desc {
@@ -486,14 +493,13 @@ body.text-page {
     line-height: 1.6;
 }
 
-/* Back link, shared by the app and privacy pages. `.app-page a.back` above
-   overrides `display` — it wins on specificity (0,2,1 vs 0,1,1), not order. */
+/* Back link, shared by every text page. A flex item of `.page-bar`, so it needs
+   no display or width of its own — the bar handles placement and the spacing
+   below it. At 0.7em this rendered ~9.8pt once the ≤500px base kicked in. */
 a.back {
-    display: inline-block;
-    font-size: 0.7em;
+    font-size: 0.8em;
     opacity: 0.55;
     border-bottom: none;
-    margin-bottom: 2.5em;
     letter-spacing: 0;
 }
 
@@ -585,18 +591,7 @@ a.back:hover {
 
 /* Privacy policy — /projects/<app>/privacy/ */
 .legal-page {
-    max-width: 34em;
-    margin: 0 auto;
-    padding: 3.5em 2em 4em;
     text-align: left;
-    animation: fadeIn 0.5s forwards;
-}
-
-.legal-page h1 {
-    font-size: 1.5em;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
 }
 
 .legal-page .meta {
@@ -691,6 +686,18 @@ a.back:hover {
 @media screen and (max-width: 500px) {
     body {
         font-size: 14pt;
+    }
+
+    #page,
+    .app-page,
+    .legal-page {
+        padding: 2.5em 1.5em 3em;
+    }
+
+    #page header h1,
+    .app-page h1,
+    .legal-page h1 {
+        font-size: 1.5em;
     }
 
     .space {

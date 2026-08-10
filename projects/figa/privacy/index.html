@@ -17,7 +17,7 @@
         <link rel="apple-touch-icon" href="../../../assets/favicons/apple-touch-icon.png" />
         <link rel="manifest" href="../../../assets/favicons/site.webmanifest" />
 
-        <link rel="stylesheet" href="../../../assets/css/main.css?v=8" />
+        <link rel="stylesheet" href="../../../assets/css/main.css?v=10" />
 
         <script>
             (function () {
@@ -37,10 +37,11 @@
         </script>
     </head>
     <body class="text-page">
-        <button id="theme-toggle" aria-label="Toggle theme">◐</button>
-
         <main class="legal-page">
-            <a class="back" href="/projects/figa/">← FIGa</a>
+            <div class="page-bar">
+                <a class="back" href="/projects/figa/">← FIGa</a>
+                <button id="theme-toggle" aria-label="Toggle theme">◐</button>
+            </div>
 
             <h1>Privacy Policy</h1>
             <p class="meta">FIGa · Last updated 9 August 2026</p>
@@ -74,9 +75,14 @@
             </p>
 
             <h2>Contact</h2>
+            <!-- The address is ROT13'd and assembled into a mailto: at runtime,
+                 so neither the rendered text nor the source carries it in a form
+                 a regex harvester picks up. The noscript line keeps the contact
+                 route reachable with JS off, as a policy document should. -->
             <p>
                 Questions about privacy:
-                <a class="inline" href="mailto:inbox+figa@ptrpl4.page">inbox+figa@ptrpl4.page</a>
+                <a class="inline" id="contact" data-c="vaobk+svtn@cgecy4.cntr">email</a>
+                <noscript>inbox+figa (at) ptrpl4 (dot) page</noscript>
             </p>
         </main>
 
@@ -88,6 +94,18 @@
                 localStorage.setItem("theme", next);
                 syncThemeColor(next);
             });
+        </script>
+
+        <script>
+            // ROT13 is its own inverse, so the same pass encodes and decodes.
+            (function () {
+                var a = document.getElementById("contact");
+                if (!a) return;
+                a.href = "mailto:" + a.getAttribute("data-c").replace(/[a-z]/gi, function (ch) {
+                    var base = ch < "a" ? 65 : 97;
+                    return String.fromCharCode(((ch.charCodeAt(0) - base + 13) % 26) + base);
+                });
+            })();
         </script>
     </body>
 </html>
