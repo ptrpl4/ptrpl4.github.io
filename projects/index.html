@@ -25,7 +25,7 @@
         <link rel="apple-touch-icon" href="../assets/favicons/apple-touch-icon.png" />
         <link rel="manifest" href="../assets/favicons/site.webmanifest" />
 
-        <link rel="stylesheet" href="../assets/css/main.css?v=11" />
+        <link rel="stylesheet" href="../assets/css/main.css?v=12" />
 
         <script>
             (function () {
@@ -311,11 +311,16 @@
                         list.appendChild(footer);
                     })
                     .catch(function () {
+                        // A throw partway through rendering would otherwise leave
+                        // partial repo rows above this message — and the appended
+                        // footer already carries id="status", so two nodes would
+                        // share the id. #project-list holds nothing but the
+                        // placeholder and JS-rendered rows, so clearing it is safe.
+                        list.textContent = "";
                         status.textContent = "Could not load projects. View them on ";
                         status.appendChild(link(null, "GitHub", "https://github.com/ptrpl4"));
                         status.appendChild(document.createTextNode("."));
-                        // Rendering may have thrown after the node was detached
-                        if (!status.isConnected) list.appendChild(status);
+                        list.appendChild(status);
                     });
             })();
         </script>

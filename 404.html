@@ -16,7 +16,7 @@
         <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon.png" />
         <link rel="manifest" href="/assets/favicons/site.webmanifest" />
 
-        <link rel="stylesheet" href="/assets/css/main.css?v=11" />
+        <link rel="stylesheet" href="/assets/css/main.css?v=12" />
 
         <script>
             // Restore saved theme before paint
@@ -50,10 +50,16 @@
                 letter-spacing: -0.04em;
             }
 
+            /*
+             * No opacity fade here. This page is not a .text-page, so it uses
+             * the global light palette (#1a3050 on #7aaac8) — 5.32:1 at full
+             * strength, with no headroom to spend: 0.75 composites to 3.42:1
+             * and even 0.90 only reaches 4.48:1, both under the 4.5:1 AA floor.
+             * Hierarchy comes from the 4em h1 against this 0.8em instead.
+             */
             #notfound p {
                 margin: 0.6em 0 1.2em;
                 font-size: 0.8em;
-                opacity: 0.65;
             }
         </style>
     </head>

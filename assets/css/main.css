@@ -155,9 +155,19 @@ button:focus-visible {
 }
 
 /* Satellite — light theme only, orbits Earth at z-index 1 (passes behind) */
+/*
+ * .space is a flex item of body with the default flex-shrink: 1, and every
+ * child here is absolutely positioned — so its min-content width is 0 and
+ * nothing stops it shrinking below the declared 760px. Between 501px and
+ * 759px the desktop breakpoint still applies while .space is narrower than
+ * 760, so a pixel `left` would strand the orbit while .circle (left: 50%)
+ * recentres. 50% IS the documented centre formula (x = space_width / 2) at
+ * every breakpoint — 380/760, 160/320, 150/300 — so this is exact, not an
+ * approximation, and it tracks whatever width .space ends up with.
+ */
 #sat-orbit {
     position: absolute;
-    left: 380px;
+    left: 50%;
     top: 510px;
     width: 0;
     height: 0;
@@ -191,10 +201,13 @@ button:focus-visible {
 }
 
 /* Comet — light theme only, crosses sky occasionally */
+/* Percentage for the same reason as #sat-orbit: at 635px the comet would sit
+   outside a shrunk .space and push a horizontal scrollbar — in both themes,
+   since `opacity: 0` and `animation: none` still occupy layout. 635/760. */
 #comet {
     position: absolute;
     top: 95px;
-    left: 635px;
+    left: 83.55%;
     width: 5px;
     height: 5px;
     border-radius: 50%;
@@ -351,6 +364,12 @@ button:focus-visible {
 #header .page-links:hover {
     opacity: 0.9;
     border-color: transparent;
+}
+
+/* Same id-specificity problem as #theme-toggle below: the generic
+   a:focus-visible is (0,1,1) and loses to the 0.55 above, dimming the ring. */
+#header .page-links:focus-visible {
+    opacity: 1;
 }
 
 /* Nav icons */
@@ -610,8 +629,9 @@ a.back:hover {
     border-bottom: dotted 1px;
 }
 
+/* No `opacity: 1` here — .legal's own 0.75 is a group-opacity layer, and a
+   descendant's opacity multiplies within it rather than escaping it. */
 .legal a:hover {
-    opacity: 1;
     border-color: transparent;
 }
 
@@ -672,6 +692,15 @@ a.back:hover {
     opacity: 0.9;
 }
 
+/* `opacity` composites the outline too, so the generic button:focus-visible
+   ring above would draw at this element's 0.45 (or 0.75 in a .page-bar) —
+   about 2:1, under the 3:1 floor for focus indicators. Both of those are id
+   selectors, so the override has to carry the id as well; keyed at (1,1,0) it
+   ties with `.page-bar #theme-toggle` and wins on source order from here. */
+#theme-toggle:focus-visible {
+    opacity: 1;
+}
+
 /*
  * Reduced motion — every animation here ends on its resting frame
  * (comet: opacity 0, satellite: full turn, fadeIn/slideUp: visible),
@@ -684,6 +713,10 @@ a.back:hover {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+        /* #header is `slideUp 0.6s 0.2s both`; without this the backwards fill
+           holds opacity 0 for the full delay, blanking the landing page for
+           200ms before it pops in. */
+        animation-delay: 0.01ms !important;
     }
 }
 
@@ -751,8 +784,7 @@ a.back:hover {
     }
 
     #sat-orbit {
-        left: 160px;
-        top: 390px;
+        top: 390px; /* left is the 50% in the base rule */
     }
 
     #satellite {
@@ -761,7 +793,7 @@ a.back:hover {
 
     #comet {
         top: 70px;
-        left: 260px;
+        left: 81.25%; /* 260/320 */
     }
 }
 
@@ -776,8 +808,7 @@ a.back:hover {
     }
 
     #sat-orbit {
-        left: 150px; /* center of 300px space */
-        top: 400px;  /* 540 - 280/2 */
+        top: 400px; /* 540 - 280/2; left is the 50% in the base rule */
     }
 
     #satellite {
@@ -788,6 +819,6 @@ a.back:hover {
 
     #comet {
         top: 65px;
-        left: 245px;
+        left: 81.67%; /* 245/300 */
     }
 }
