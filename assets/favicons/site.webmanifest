@@ -2,6 +2,7 @@
   "name": "Pyotr Void",
   "short_name": "ptrpl4",
   "description": "Personal website of Pyotr Void, Software Engineer",
+  "id": "/",
   "start_url": "/",
   "display": "standalone",
   "theme_color": "#0a0e18",
@@ -14,22 +15,10 @@
       "purpose": "any"
     },
     {
-      "src": "web-app-manifest-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
       "src": "web-app-manifest-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
-    },
-    {
-      "src": "web-app-manifest-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
     }
   ]
 }

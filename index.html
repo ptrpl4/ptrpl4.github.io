@@ -50,10 +50,12 @@
 
                 // Delegated on document so this can live in <head>, where the
                 // pre-paint work already has to happen — #theme-toggle is not
-                // parsed yet. Pages with extra work to do on a switch (the
-                // landing page repositions the sky object) set onThemeChange.
+                // parsed yet. This block is identical on every page: one that
+                // needs extra work on a switch sets window.onThemeChange, which
+                // only the landing page does (to reroll the sky object).
                 document.addEventListener("click", function (e) {
-                    if (!e.target || e.target.id !== "theme-toggle") return;
+                    var t = e.target;
+                    if (!t || !t.closest || !t.closest("#theme-toggle")) return;
                     var html = document.documentElement;
                     var next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
                     html.setAttribute("data-theme", next);
@@ -83,7 +85,10 @@
                     <a class="page-links" href="/projects/">projects</a>
 
                     <nav aria-label="Social media links">
-                        <ul>
+                        <!-- role="list" because the reset sets `list-style: none`,
+                             and Safari drops list semantics from a list styled
+                             that way — VoiceOver stops announcing the count. -->
+                        <ul role="list">
                             <li>
                                 <a href="https://twitter.com/ptrpl4" aria-label="Twitter">
                                     <svg

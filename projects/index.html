@@ -28,8 +28,12 @@
         <link rel="canonical" href="https://ptrpl4.page/projects/" />
 
         <!-- The repo list is this page's main content, so overlap DNS + TLS
-             with parse rather than paying for it after the script runs. -->
-        <link rel="preconnect" href="https://api.github.com" />
+             with parse rather than paying for it after the script runs.
+             `crossorigin` is required, not decorative: the list arrives via a
+             credential-less CORS fetch, and browsers key the socket pool on
+             credential mode — without it the warmed connection is the wrong one
+             and the fetch opens a second. -->
+        <link rel="preconnect" href="https://api.github.com" crossorigin />
 
         <link rel="stylesheet" href="../assets/css/main.css?v=13" />
 
@@ -50,14 +54,18 @@
 
                 // Delegated on document so this can live in <head>, where the
                 // pre-paint work already has to happen — #theme-toggle is not
-                // parsed yet.
+                // parsed yet. This block is identical on every page: one that
+                // needs extra work on a switch sets window.onThemeChange, which
+                // only the landing page does (to reroll the sky object).
                 document.addEventListener("click", function (e) {
-                    if (!e.target || e.target.id !== "theme-toggle") return;
+                    var t = e.target;
+                    if (!t || !t.closest || !t.closest("#theme-toggle")) return;
                     var html = document.documentElement;
                     var next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
                     html.setAttribute("data-theme", next);
                     localStorage.setItem("theme", next);
                     syncThemeColor(next);
+                    if (window.onThemeChange) window.onThemeChange(next);
                 });
             })();
         </script>
