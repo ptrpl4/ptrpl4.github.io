@@ -27,11 +27,23 @@
 
         <link rel="canonical" href="https://ptrpl4.page/projects/clauss/" />
 
-        <link rel="stylesheet" href="../../assets/css/main.css?v=13" />
+        <link rel="stylesheet" href="../../assets/css/main.css?v=14" />
 
         <script>
             (function () {
-                var saved = localStorage.getItem("theme");
+                // Storage can be refused outright — Safari with cookies blocked,
+                // a locked-down profile, some file:// origins. An uncaught
+                // SecurityError here would abort the rest of this block and take
+                // the toggle listener below with it, leaving a dead button. Fall
+                // back to a theme that lasts the session instead.
+                function readTheme() {
+                    try { return localStorage.getItem("theme"); } catch (e) { return null; }
+                }
+                function saveTheme(next) {
+                    try { localStorage.setItem("theme", next); } catch (e) {}
+                }
+
+                var saved = readTheme();
                 if (saved === "light" || saved === "dark") {
                     document.documentElement.setAttribute("data-theme", saved);
                 }
@@ -55,7 +67,7 @@
                     var html = document.documentElement;
                     var next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
                     html.setAttribute("data-theme", next);
-                    localStorage.setItem("theme", next);
+                    saveTheme(next);
                     syncThemeColor(next);
                     if (window.onThemeChange) window.onThemeChange(next);
                 });
@@ -71,14 +83,16 @@
 
             <div class="app-title">
                 <h1>Clauss</h1>
-                <span class="coming-soon">coming soon</span>
+                <span class="badge">released</span>
             </div>
             <p class="desc">Menu-bar manager for Claude Code sessions.</p>
             <p class="app-platforms">macOS</p>
 
-            <!-- Beta only for now. Add the App Store listing link here, and drop
-                 the coming-soon badge above, once the app is approved. -->
+            <!-- Store URL is deliberately storefront-less: apps.apple.com/app/<id>
+                 301s each visitor to their own region. TestFlight stays alongside
+                 it for pre-release builds. -->
             <div class="app-links">
+                <a class="app-link" href="https://apps.apple.com/app/clauss/id6781245231" target="_blank" rel="noopener">App Store ↗</a>
                 <a class="app-link" href="https://testflight.apple.com/join/cXZXyuve" target="_blank" rel="noopener">TestFlight ↗</a>
             </div>
 

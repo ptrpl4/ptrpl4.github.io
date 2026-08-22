@@ -30,12 +30,24 @@
 
         <link rel="canonical" href="https://ptrpl4.page/" />
 
-        <link rel="stylesheet" href="assets/css/main.css?v=13" />
+        <link rel="stylesheet" href="assets/css/main.css?v=14" />
 
         <script>
             // Restore saved theme before paint
             (function () {
-                var saved = localStorage.getItem("theme");
+                // Storage can be refused outright — Safari with cookies blocked,
+                // a locked-down profile, some file:// origins. An uncaught
+                // SecurityError here would abort the rest of this block and take
+                // the toggle listener below with it, leaving a dead button. Fall
+                // back to a theme that lasts the session instead.
+                function readTheme() {
+                    try { return localStorage.getItem("theme"); } catch (e) { return null; }
+                }
+                function saveTheme(next) {
+                    try { localStorage.setItem("theme", next); } catch (e) {}
+                }
+
+                var saved = readTheme();
                 if (saved === "light" || saved === "dark") {
                     document.documentElement.setAttribute("data-theme", saved);
                 }
@@ -59,7 +71,7 @@
                     var html = document.documentElement;
                     var next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
                     html.setAttribute("data-theme", next);
-                    localStorage.setItem("theme", next);
+                    saveTheme(next);
                     syncThemeColor(next);
                     if (window.onThemeChange) window.onThemeChange(next);
                 });

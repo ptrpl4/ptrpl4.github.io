@@ -511,7 +511,7 @@ body.text-page {
    sat beside the name for one revision, which needed absolute positioning to
    keep the name itself on the page centre line and still overflowed a 320px
    viewport. Below, neither problem exists. */
-.app-title .coming-soon {
+.app-title .badge {
     display: inline-block;
     margin-top: 0.9em;
 }
@@ -592,7 +592,7 @@ a.back:hover {
     border-color: transparent;
 }
 
-.coming-soon {
+.badge {
     font-size: 0.68em;
     opacity: 0.75;
     text-transform: uppercase;
@@ -604,7 +604,7 @@ a.back:hover {
 }
 
 /* In the projects list the badge trails the name inline, in normal flow */
-.project-name + .coming-soon {
+.project-name + .badge {
     margin-left: 0.75em;
     vertical-align: middle;
 }
