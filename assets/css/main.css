@@ -469,11 +469,25 @@ button:focus-visible {
     text-align: center;
 }
 
-/* Under the name: the <h1> is a block, so the badge starts its own line. Beside
-   it needed absolute positioning and overflowed a 320px viewport. */
+/* Last in .app-title: the <h1> and the icon above it are both blocks, so the
+   badge starts its own line. Beside the name it needed absolute positioning and
+   overflowed a 320px viewport. */
 .app-title .badge {
     display: inline-block;
     margin-top: 0.9em;
+}
+
+/* Between the name and the badge, inside .app-title. The artwork is a macOS
+   squircle with the shape and its ~10% transparent margin baked into the alpha —
+   no border-radius, no background. Shipped at 2x; the attributes reserve the box
+   before it loads. min(), not a flat 256px: the column is 245px wide at the
+   320px floor, so a fixed width would overflow it. Not max-width — there is
+   exactly one of those in this file and verify-docs.js counts them. */
+.app-icon {
+    display: block;
+    width: min(256px, 100%);
+    height: auto;
+    margin: 1em auto 0;
 }
 
 /* Two tiers and no others: 0.85 for body copy, 0.75 for secondary. 0.75 is the
