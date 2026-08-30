@@ -30,7 +30,7 @@
     --bg: #8ab6d0;
     --fg: #0a1828;
     --circle-bg: #1c4e8c;
-    --circle-fg: #0a1828;
+    --circle-fg: #deeeff;
     --circle-shadow: 0 0 14px 5px rgba(80, 135, 180, 0.5), 0 0 80px rgba(55, 105, 155, 0.38), 0 0 160px rgba(40, 85, 135, 0.2), 0 30px 60px rgba(55, 100, 150, 0.28), inset 0 45px 40px -15px rgba(255, 250, 200, 0.2), inset 0 -65px 55px -10px rgba(0, 4, 25, 0.6), inset 0 0 25px rgba(50, 100, 200, 0.12);
     --icon-hover-bg: rgba(255, 255, 255, 0.12);
     --icon-active-bg: rgba(255, 255, 255, 0.24);
@@ -345,7 +345,7 @@ button:focus-visible {
 }
 
 [data-theme="light"] #header {
-    text-shadow: 0 1px 8px rgba(255, 255, 255, 0.7);
+    text-shadow: 0 1px 8px rgba(9, 24, 48, 0.45);
 }
 
 #header h1 {
@@ -359,14 +359,14 @@ button:focus-visible {
     font-size: 0.72em;
     font-weight: 400;
     margin: 0.6em 0 0.2em;
-    opacity: 0.65;
+    opacity: 0.85;
     line-height: 1.6;
 }
 
 #header .page-links {
     font-size: 0.66em;
     margin: 0.2em 0 0.8em;
-    opacity: 0.55;
+    opacity: 0.75;
     border-bottom: dotted 1px currentColor;
     display: inline-block;
 }
@@ -452,7 +452,6 @@ button:focus-visible {
    not one sitting in a row of text. */
 .page-bar #theme-toggle {
     position: static;
-    opacity: 0.75;
 }
 
 /* One heading size for every text page */
@@ -752,7 +751,7 @@ a.back:hover {
     cursor: pointer;
     color: var(--fg);
     font-size: 1.1em;
-    opacity: 0.45;
+    opacity: 0.75;
     padding: 0.2em;
     line-height: 1;
     transition: opacity var(--animation-duration) ease;
