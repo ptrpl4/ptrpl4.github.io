@@ -29,9 +29,9 @@
 [data-theme="light"] {
     --bg: #8ab6d0;
     --fg: #0a1828;
-    --circle-bg: #1c4e8c;
+    --circle-bg: #05070c;
     --circle-fg: #deeeff;
-    --circle-shadow: 0 0 14px 5px rgba(80, 135, 180, 0.5), 0 0 80px rgba(55, 105, 155, 0.38), 0 0 160px rgba(40, 85, 135, 0.2), 0 30px 60px rgba(55, 100, 150, 0.28), inset 0 45px 40px -15px rgba(255, 250, 200, 0.2), inset 0 -65px 55px -10px rgba(0, 4, 25, 0.6), inset 0 0 25px rgba(50, 100, 200, 0.12);
+    --circle-shadow: 0 0 0 2px rgba(255, 232, 190, 0.95), 0 0 20px 6px rgba(255, 188, 98, 0.8), 0 0 60px 16px rgba(255, 150, 52, 0.45), 0 0 140px 34px rgba(255, 128, 30, 0.25), 0 0 260px 70px rgba(255, 110, 20, 0.1), inset 0 0 28px rgba(255, 186, 110, 0.28);
     --icon-hover-bg: rgba(255, 255, 255, 0.12);
     --icon-active-bg: rgba(255, 255, 255, 0.24);
     --border-subtle: rgba(26, 48, 80, 0.12);
@@ -139,7 +139,10 @@ button:focus-visible {
     animation: fadeIn 0.6s ease forwards;
 }
 
-/* Circle (Earth) — the page's one solid object; clouds come from ::before */
+/* The page's one solid object. Earth in dark; in light it is a black hole —
+   same box, different paint. ::before carries the cloud deck or the accretion
+   ring. Whatever goes there must stay dark behind the middle: #header sits in
+   it, and verify-docs.js only ever sees the flat --circle-bg. */
 .circle {
     position: absolute;
     left: 50%;
@@ -209,6 +212,14 @@ button:focus-visible {
         9px 0 0 2px rgba(170, 195, 220, 0.75);
 }
 
+/* Rests on a full turn, so reduced-motion's 0.01ms duration leaves the vortex
+   exactly where it started rather than mid-sweep. */
+@keyframes vortex {
+    to {
+        transform: rotate(1turn);
+    }
+}
+
 @keyframes orbit-sat {
     from { transform: rotate(0deg); }
     to   { transform: rotate(360deg); }
@@ -269,14 +280,38 @@ button:focus-visible {
         radial-gradient(ellipse 95% 95% at 50% 50%, rgba(200, 215, 230, 0.18) 0%, transparent 100%);
 }
 
+/* Light: no clouds and no rings — a vortex. Two conic layers turning the same
+   way at different rates, which is how a real accretion disc moves: the inner
+   material laps the outer. The shear between them reads as spiral arms rather
+   than the spokes a single rotating conic would give.
+
+   Each layer opens with an opaque var(--circle-bg) disc, so the arms are erased
+   from the middle and #header keeps a flat backing. That stop is the contrast
+   guarantee, and it is the one thing verify-docs.js cannot see — it measures
+   text against --circle-bg alone and has no idea what these gradients do. */
 [data-theme="light"] .circle::before {
     background:
-        radial-gradient(ellipse 85% 45% at 30% 28%, rgba(255, 255, 255, 0.55) 30%, transparent 80%),
-        radial-gradient(ellipse 75% 40% at 72% 22%, rgba(255, 255, 255, 0.50) 30%, transparent 80%),
-        radial-gradient(ellipse 80% 42% at 55% 65%, rgba(255, 255, 255, 0.52) 30%, transparent 80%),
-        radial-gradient(ellipse 65% 35% at 18% 62%, rgba(255, 255, 255, 0.45) 30%, transparent 80%),
-        radial-gradient(ellipse 70% 38% at 82% 60%, rgba(255, 255, 255, 0.48) 30%, transparent 80%),
-        radial-gradient(ellipse 95% 95% at 50% 50%, rgba(255, 255, 255, 0.22) 0%, transparent 100%);
+        radial-gradient(circle at 50% 50%, var(--circle-bg) 46%, transparent 78%),
+        conic-gradient(from 0deg at 50% 50%,
+            transparent 0deg, rgba(255, 198, 116, 0.5) 46deg, transparent 104deg,
+            transparent 120deg, rgba(255, 174, 84, 0.42) 166deg, transparent 224deg,
+            transparent 240deg, rgba(255, 210, 140, 0.46) 286deg, transparent 344deg);
+    animation: vortex 60s linear infinite;
+}
+
+[data-theme="light"] .circle::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 50% 50%, var(--circle-bg) 34%, transparent 62%),
+        conic-gradient(from 55deg at 50% 50%,
+            transparent 0deg, rgba(255, 226, 176, 0.34) 60deg, transparent 130deg,
+            transparent 180deg, rgba(255, 200, 130, 0.3) 240deg, transparent 310deg);
+    animation: vortex 34s linear infinite;
 }
 
 /*
@@ -342,10 +377,6 @@ button:focus-visible {
     padding: 1em;
     animation: slideUp 0.6s 0.2s both;
     text-shadow: 0 1px 10px rgba(0, 8, 24, 0.6);
-}
-
-[data-theme="light"] #header {
-    text-shadow: 0 1px 8px rgba(9, 24, 48, 0.45);
 }
 
 #header h1 {
