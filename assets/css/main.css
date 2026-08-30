@@ -619,6 +619,128 @@ a.back:hover {
     border-color: transparent;
 }
 
+/* Projects list — page-local, but cached with everything else. */
+/* This page declares no class on <html>, so it gets main.css's
+   defaults: normal block flow and the high-contrast palette. The
+   shared text-column, .page-bar, a.back and h1 rules live there
+   too. Page-local rules only. */
+#page header {
+    margin-bottom: 2.5em;
+}
+
+#project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1em;
+}
+
+/* Divider between items, not after the last one. A trailing
+   `border-bottom` + `:last-child` reset would still leave a rule
+   under the final repo, since the JS appends a #status footer
+   after it — so the rule goes on top of every item but the first. */
+.project-item {
+    padding: 1em 0;
+}
+
+.project-item + .project-item {
+    border-top: solid 1px var(--border-subtle);
+}
+
+.project-name {
+    font-size: 1em;
+    font-weight: 400;
+    border-bottom: dotted 1px;
+    transition: border-color var(--animation-duration) ease-in-out;
+}
+
+.project-name:hover {
+    border-color: transparent;
+}
+
+.project-live {
+    font-size: 0.75em;
+    opacity: 0.85;
+    margin-left: 0.75em;
+    vertical-align: middle;
+    border-bottom: solid 1px var(--border-medium);
+}
+
+.project-live:hover {
+    opacity: 1;
+    border-color: transparent;
+}
+
+/* 0.75 is the muted floor set in main.css — see the tier note
+   there. Anything lower drops this text under 4.5:1. */
+.project-desc {
+    font-size: 0.82em;
+    opacity: 0.75;
+    margin-top: 0.25em;
+    line-height: 1.4;
+}
+
+.project-meta {
+    display: flex;
+    gap: 1em;
+    margin-top: 0.4em;
+    font-size: 0.75em;
+    opacity: 0.75;
+}
+
+#status {
+    font-size: 0.9em;
+    opacity: 0.75;
+}
+
+.project-section {
+    margin-bottom: 2.5em;
+}
+
+.project-section:last-of-type {
+    margin-bottom: 0;
+}
+
+.section-title {
+    font-size: 0.7em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.75;
+    margin-bottom: 0.5em;
+}
+
+.section-note {
+    font-size: 0.8em;
+    opacity: 0.75;
+    margin-bottom: 0.5em;
+}
+
+/* 404 — page-local, but cached with everything else. */
+#notfound {
+    text-align: center;
+    padding: 2em;
+    animation: fadeIn 0.6s ease forwards;
+}
+
+#notfound h1 {
+    font-size: 4em;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.04em;
+}
+
+/*
+ * No opacity fade here. This page is class="landing", so it uses
+ * the landing light palette (#1a3050 on #7aaac8) — 5.32:1 at full
+ * strength, with no headroom to spend: 0.75 composites to 3.42:1
+ * and even 0.90 only reaches 4.48:1, both under the 4.5:1 AA floor.
+ * Hierarchy comes from the 4em h1 against this 0.8em instead.
+ */
+#notfound p {
+    margin: 0.6em 0 1.2em;
+    font-size: 0.8em;
+}
+
 /* Theme toggle */
 #theme-toggle {
     position: fixed;

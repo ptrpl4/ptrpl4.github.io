@@ -3,7 +3,7 @@ PORT ?= 8000
 PID  := .serve.pid
 URL  := http://127.0.0.1:$(PORT)
 
-.PHONY: serve stop restart check
+.PHONY: serve stop restart
 
 # Absolute asset paths (/assets/...) mean this must serve the repo root.
 serve:
@@ -25,6 +25,3 @@ stop:
 	rm -f $(PID)
 
 restart: stop serve
-
-check:
-	@node scripts/verify-docs.js

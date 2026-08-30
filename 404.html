@@ -17,32 +17,6 @@
 
         <script src="/assets/js/theme.js"></script>
 
-        <style>
-            #notfound {
-                text-align: center;
-                padding: 2em;
-                animation: fadeIn 0.6s ease forwards;
-            }
-
-            #notfound h1 {
-                font-size: 4em;
-                font-weight: 700;
-                line-height: 1;
-                letter-spacing: -0.04em;
-            }
-
-            /*
-             * No opacity fade here. This page is class="landing", so it uses
-             * the landing light palette (#1a3050 on #7aaac8) — 5.32:1 at full
-             * strength, with no headroom to spend: 0.75 composites to 3.42:1
-             * and even 0.90 only reaches 4.48:1, both under the 4.5:1 AA floor.
-             * Hierarchy comes from the 4em h1 against this 0.8em instead.
-             */
-            #notfound p {
-                margin: 0.6em 0 1.2em;
-                font-size: 0.8em;
-            }
-        </style>
     </head>
     <body>
         <button id="theme-toggle" aria-label="Toggle theme">◐</button>
