@@ -11,8 +11,8 @@
 /* Themes */
 :root,
 [data-theme="dark"] {
-    --bg: #0a0e18;
-    --fg: #7898b8;
+    --bg: #111c2e;
+    --fg: #9db8d4;
     --circle-bg: #091830;
     --circle-fg: #deeeff;
     --circle-shadow: 0 0 80px rgba(20, 50, 120, 0.3), 0 0 12px 4px rgba(60, 130, 255, 0.35), inset 0 0 30px rgba(30, 80, 220, 0.22);
@@ -27,8 +27,8 @@
 }
 
 [data-theme="light"] {
-    --bg: #7aaac8;
-    --fg: #1a3050;
+    --bg: #8ab6d0;
+    --fg: #0a1828;
     --circle-bg: #1c4e8c;
     --circle-fg: #0a1828;
     --circle-shadow: 0 0 14px 5px rgba(80, 135, 180, 0.5), 0 0 80px rgba(55, 105, 155, 0.38), 0 0 160px rgba(40, 85, 135, 0.2), 0 30px 60px rgba(55, 100, 150, 0.28), inset 0 45px 40px -15px rgba(255, 250, 200, 0.2), inset 0 -65px 55px -10px rgba(0, 4, 25, 0.6), inset 0 0 25px rgba(50, 100, 200, 0.12);
@@ -39,6 +39,19 @@
     --sky-color: #ffcc28;
     --sky-glow: 0 0 35px rgba(255, 204, 40, 1), 0 0 80px rgba(255, 170, 10, 0.75), 0 0 160px rgba(255, 140, 0, 0.45), 0 0 240px rgba(255, 120, 0, 0.18);
     color-scheme: light;
+}
+
+/* The decorative palette, opt-in; the accessible pair above is the default.
+   Class AND theme on each selector makes them (0,2,1) against (0,1,0), so they
+   win on specificity in any source order — keep both parts. */
+html.landing[data-theme="dark"] {
+    --bg: #0a0e18;
+    --fg: #7898b8;
+}
+
+html.landing[data-theme="light"] {
+    --bg: #7aaac8;
+    --fg: #1a3050;
 }
 
 /* Base */
@@ -57,14 +70,21 @@ body {
     letter-spacing: -0.025em;
     color: var(--fg);
     background: var(--bg);
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    min-height: 100%;
     transition: background var(--animation-duration) ease,
         color var(--animation-duration) ease;
     -webkit-text-size-adjust: none;
     min-width: 320px;
+}
+
+/* Centring is opt-in: a flex item taller than an align-items:center container
+   overflows above it, at a negative scroll offset, unreachable. A page that
+   forgets this class should merely fail to centre. */
+html.landing body {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 ol,
@@ -156,16 +176,9 @@ button:focus-visible {
 }
 
 /* Satellite — light theme only, orbits Earth at z-index 1 (passes behind) */
-/*
- * .space is a flex item of body with the default flex-shrink: 1, and every
- * child here is absolutely positioned — so its min-content width is 0 and
- * nothing stops it shrinking below the declared 760px. Between 501px and
- * 759px the desktop breakpoint still applies while .space is narrower than
- * 760, so a pixel `left` would strand the orbit while .circle (left: 50%)
- * recentres. 50% IS the documented centre formula (x = space_width / 2) at
- * every breakpoint — 380/760, 160/320, 150/300 — so this is exact, not an
- * approximation, and it tracks whatever width .space ends up with.
- */
+/* Percentage, never a pixel left: .space shrinks below 760px between 501 and
+   759, where a pixel value would strand the orbit while .circle (left: 50%)
+   recentres. 50% is the exact centre formula at every breakpoint. */
 #sat-orbit {
     position: absolute;
     left: 50%;
@@ -305,11 +318,8 @@ button:focus-visible {
         radial-gradient(circle at 64% 34%, #e2d8c4, #c4bca8 42%, #968c7c);
 }
 
-/*
- * Crescent: overlay a --bg-colored circle offset to the left,
- * leaving a lit arc on the right. Since #sky-object never overlaps
- * .circle geometrically, --bg matches the background behind the moon.
- */
+/* A --bg disc offset left, leaving a lit arc. #sky-object never overlaps
+   .circle, so --bg always matches what is actually behind the moon. */
 [data-theme="dark"] #sky-object::after {
     content: '';
     position: absolute;
@@ -415,50 +425,8 @@ button:focus-visible {
     transform: scale(0.95);
 }
 
-/*
- * Text pages — /projects/ and everything under it.
- *
- * `body` above is a flex container with `height: 100%` and
- * `align-items: center`, sized for the landing page's fixed scene. A flex item
- * taller than that container overflows it equally top and bottom, and the top
- * overflow sits at a negative scroll offset — unreachable. Any page whose
- * content can outgrow the viewport must therefore opt out.
- */
-body.text-page {
-    display: block;
-    height: auto;
-    min-height: 100%;
-}
-
-/*
- * Text-page palettes. Both themes repaint here, because the global pairs are
- * tuned for the landing page — large type over a decorative scene — and a page
- * of small body text needs contrast headroom the fades below can spend.
- *
- * Global light is #1a3050 on #7aaac8: 5.32:1, barely over the 4.5 AA floor at
- * full strength, so opacity 0.75 dropped it to 3.4. These pairs start at
- * 8.2:1 (light) and 8.3:1 (dark), which keeps the 0.75 tier at 4.96 / 5.26.
- *
- * Each is scoped to its own [data-theme] and nothing else. A bare :root in
- * either selector list would tie with the other theme's [data-theme] rule on
- * specificity and, sitting later in the cascade, win in both modes — silently
- * disabling the toggle. Mirrored by each text page's syncThemeColor() BG map.
- */
-[data-theme="dark"] body.text-page {
-    --bg: #111c2e;
-    --fg: #9db8d4;
-}
-
-[data-theme="light"] body.text-page {
-    --bg: #8ab6d0;
-    --fg: #0a1828;
-}
-
-/*
- * Shared text column. One width and one padding across the projects list, the
- * app pages and the privacy pages, so navigating between them does not shift
- * the measure. `#page` carries an id (1,0,0) but nothing here competes with it.
- */
+/* One width and padding across the projects list, the app pages and the privacy
+   pages, so navigating between them does not shift the measure. */
 #page,
 .app-page,
 .legal-page {
@@ -468,12 +436,8 @@ body.text-page {
     animation: fadeIn 0.5s forwards;
 }
 
-/*
- * Top bar: back link left, theme toggle right, on one line. It sits inside the
- * text column rather than the viewport, so it picks up that column's width and
- * padding and the toggle lands on the same line as the back link at every
- * breakpoint — no separate positioning per page.
- */
+/* Inside the text column, not the viewport, so it inherits that column's width
+   and padding and needs no per-page positioning. */
 .page-bar {
     display: flex;
     justify-content: space-between;
@@ -506,26 +470,16 @@ body.text-page {
     text-align: center;
 }
 
-/* Under the name at every width — `.app-title`'s <h1> is a block, so the badge
-   starts its own line, and `.app-page`'s `text-align: center` centres both. It
-   sat beside the name for one revision, which needed absolute positioning to
-   keep the name itself on the page centre line and still overflowed a 320px
-   viewport. Below, neither problem exists. */
+/* Under the name: the <h1> is a block, so the badge starts its own line. Beside
+   it needed absolute positioning and overflowed a 320px viewport. */
 .app-title .badge {
     display: inline-block;
     margin-top: 0.9em;
 }
 
-/*
- * Two fade tiers on the text pages, and no others: 0.85 for text that reads as
- * body copy, 0.75 for anything secondary. 0.75 is the floor — below it the
- * muted colour drops under 4.5:1 against either text-page --bg, and every one
- * of these elements is under 14pt once the ≤500px base applies.
- *
- * Hierarchy is carried by size, weight, case and letter-spacing instead. The
- * old 0.45–0.65 fades were doing that job a second time, at the cost of
- * legibility: .project-desc sat at 2.83:1 in light mode.
- */
+/* Two tiers and no others: 0.85 for body copy, 0.75 for secondary. 0.75 is the
+   floor — below it the composite drops under 4.5:1 against either --bg. Size,
+   weight, case and letter-spacing carry hierarchy instead. */
 .app-page .desc {
     font-size: 0.82em;
     opacity: 0.75;
@@ -687,20 +641,15 @@ a.back:hover {
     opacity: 0.9;
 }
 
-/* `opacity` composites the outline too, so the generic button:focus-visible
-   ring above would draw at this element's 0.45 (or 0.75 in a .page-bar) —
-   about 2:1, under the 3:1 floor for focus indicators. Both of those are id
-   selectors, so the override has to carry the id as well; keyed at (1,1,0) it
-   ties with `.page-bar #theme-toggle` and wins on source order from here. */
+/* opacity composites the outline too, so the generic ring would draw at 0.45 —
+   about 2:1, under the 3:1 floor for focus indicators. Must carry the id to
+   outrank `.page-bar #theme-toggle`. */
 #theme-toggle:focus-visible {
     opacity: 1;
 }
 
-/*
- * Reduced motion — every animation here ends on its resting frame
- * (comet: opacity 0, satellite: full turn, fadeIn/slideUp: visible),
- * so collapsing durations degrades cleanly to the static scene.
- */
+/* Every animation ends on its resting frame, so collapsing durations degrades
+   cleanly to the static scene. */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -738,19 +687,16 @@ a.back:hover {
 
 /* Responsive */
 @media screen and (max-width: 500px) {
+    /* 300 is too thin once the size drops a tier and the fades take another
+       bite. Landing keeps it — large type over the scene. */
     body {
         /* 14pt at a 16px root — see the base rule for why this is not pt. */
         font-size: 1.1667rem;
+        font-weight: 400;
     }
 
-    /*
-     * The base 300 is a thin stroke once the base size drops a tier and the fades below
-     * take another bite — the point at which the text pages became hard to read
-     * on a phone while the desktop rendering still looked fine. Scoped to text
-     * pages: the landing page is large type and keeps the lighter weight.
-     */
-    body.text-page {
-        font-weight: 400;
+    html.landing body {
+        font-weight: 300;
     }
 
     #page,

@@ -1,13 +1,10 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" class="landing" data-theme="dark">
     <head>
         <meta charset="utf-8" />
         <title>Lost in space — ptrpl4</title>
         <meta name="description" content="Page not found" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <!-- Kept in sync with the active theme by syncThemeColor(); not keyed
-             on prefers-color-scheme, since the toggle is what picks the theme. -->
-        <meta name="theme-color" content="#0a0e18" />
         <meta name="color-scheme" content="dark light" />
         <meta name="robots" content="noindex" />
 
@@ -16,53 +13,9 @@
         <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon.png" />
         <link rel="manifest" href="/assets/favicons/site.webmanifest" />
 
-        <link rel="stylesheet" href="/assets/css/main.css?v=14" />
+        <link rel="stylesheet" href="/assets/css/main.css?v=15" />
 
-        <script>
-            // Restore saved theme before paint
-            (function () {
-                // Storage can be refused outright — Safari with cookies blocked,
-                // a locked-down profile, some file:// origins. An uncaught
-                // SecurityError here would abort the rest of this block and take
-                // the toggle listener below with it, leaving a dead button. Fall
-                // back to a theme that lasts the session instead.
-                function readTheme() {
-                    try { return localStorage.getItem("theme"); } catch (e) { return null; }
-                }
-                function saveTheme(next) {
-                    try { localStorage.setItem("theme", next); } catch (e) {}
-                }
-
-                var saved = readTheme();
-                if (saved === "light" || saved === "dark") {
-                    document.documentElement.setAttribute("data-theme", saved);
-                }
-
-                // Browser chrome follows the toggle, not the OS. Values mirror --bg.
-                var BG = { dark: "#0a0e18", light: "#7aaac8" };
-                window.syncThemeColor = function (theme) {
-                    var meta = document.querySelector('meta[name="theme-color"]');
-                    if (meta) meta.setAttribute("content", BG[theme] || BG.dark);
-                };
-                syncThemeColor(document.documentElement.getAttribute("data-theme"));
-
-                // Delegated on document so this can live in <head>, where the
-                // pre-paint work already has to happen — #theme-toggle is not
-                // parsed yet. This block is identical on every page: one that
-                // needs extra work on a switch sets window.onThemeChange, which
-                // only the landing page does (to reroll the sky object).
-                document.addEventListener("click", function (e) {
-                    var t = e.target;
-                    if (!t || !t.closest || !t.closest("#theme-toggle")) return;
-                    var html = document.documentElement;
-                    var next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
-                    html.setAttribute("data-theme", next);
-                    saveTheme(next);
-                    syncThemeColor(next);
-                    if (window.onThemeChange) window.onThemeChange(next);
-                });
-            })();
-        </script>
+        <script src="/assets/js/theme.js?v=15"></script>
 
         <style>
             #notfound {
@@ -79,8 +32,8 @@
             }
 
             /*
-             * No opacity fade here. This page is not a .text-page, so it uses
-             * the global light palette (#1a3050 on #7aaac8) — 5.32:1 at full
+             * No opacity fade here. This page is class="landing", so it uses
+             * the landing light palette (#1a3050 on #7aaac8) — 5.32:1 at full
              * strength, with no headroom to spend: 0.75 composites to 3.42:1
              * and even 0.90 only reaches 4.48:1, both under the 4.5:1 AA floor.
              * Hierarchy comes from the 4em h1 against this 0.8em instead.

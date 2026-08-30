@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" class="landing" data-theme="dark">
     <head>
         <meta charset="utf-8" />
         <title>Pyotr Void — Software Engineer</title>
@@ -8,9 +8,6 @@
             content="Personal website of Pyotr Void, Software Engineer"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <!-- Kept in sync with the active theme by syncThemeColor(); not keyed
-             on prefers-color-scheme, since the toggle is what picks the theme. -->
-        <meta name="theme-color" content="#0a0e18" />
         <meta name="color-scheme" content="dark light" />
 
         <!-- Open Graph -->
@@ -23,60 +20,16 @@
         <meta name="twitter:creator" content="@ptrpl4" />
 
         <!-- Favicon -->
-        <link rel="icon" href="assets/favicons/favicon.svg" type="image/svg+xml" />
-        <link rel="icon" href="assets/favicons/favicon.ico" />
-        <link rel="apple-touch-icon" href="assets/favicons/apple-touch-icon.png" />
-        <link rel="manifest" href="assets/favicons/site.webmanifest" />
+        <link rel="icon" href="/assets/favicons/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/assets/favicons/favicon.ico" />
+        <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon.png" />
+        <link rel="manifest" href="/assets/favicons/site.webmanifest" />
 
         <link rel="canonical" href="https://ptrpl4.page/" />
 
-        <link rel="stylesheet" href="assets/css/main.css?v=14" />
+        <link rel="stylesheet" href="/assets/css/main.css?v=15" />
 
-        <script>
-            // Restore saved theme before paint
-            (function () {
-                // Storage can be refused outright — Safari with cookies blocked,
-                // a locked-down profile, some file:// origins. An uncaught
-                // SecurityError here would abort the rest of this block and take
-                // the toggle listener below with it, leaving a dead button. Fall
-                // back to a theme that lasts the session instead.
-                function readTheme() {
-                    try { return localStorage.getItem("theme"); } catch (e) { return null; }
-                }
-                function saveTheme(next) {
-                    try { localStorage.setItem("theme", next); } catch (e) {}
-                }
-
-                var saved = readTheme();
-                if (saved === "light" || saved === "dark") {
-                    document.documentElement.setAttribute("data-theme", saved);
-                }
-
-                // Browser chrome follows the toggle, not the OS. Values mirror --bg.
-                var BG = { dark: "#0a0e18", light: "#7aaac8" };
-                window.syncThemeColor = function (theme) {
-                    var meta = document.querySelector('meta[name="theme-color"]');
-                    if (meta) meta.setAttribute("content", BG[theme] || BG.dark);
-                };
-                syncThemeColor(document.documentElement.getAttribute("data-theme"));
-
-                // Delegated on document so this can live in <head>, where the
-                // pre-paint work already has to happen — #theme-toggle is not
-                // parsed yet. This block is identical on every page: one that
-                // needs extra work on a switch sets window.onThemeChange, which
-                // only the landing page does (to reroll the sky object).
-                document.addEventListener("click", function (e) {
-                    var t = e.target;
-                    if (!t || !t.closest || !t.closest("#theme-toggle")) return;
-                    var html = document.documentElement;
-                    var next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
-                    html.setAttribute("data-theme", next);
-                    saveTheme(next);
-                    syncThemeColor(next);
-                    if (window.onThemeChange) window.onThemeChange(next);
-                });
-            })();
-        </script>
+        <script src="/assets/js/theme.js?v=15"></script>
     </head>
     <body>
         <button id="theme-toggle" aria-label="Toggle theme">◐</button>
@@ -198,13 +151,9 @@
                     setMoonPhase();
                 }
 
-                // Place sun/moon in a random position in the upper arc above Earth.
-                // R is scaled to Earth's actual rendered radius so it works on all screen sizes.
-                //
-                // The two random draws are held across calls so a resize re-solves
-                // the same slot against the new geometry instead of teleporting the
-                // object elsewhere. `reroll` picks a new slot (on theme switch).
-                // angleSeed is a fraction of maxAngle, so the clamp still adapts.
+                // The two draws are held across calls so a resize re-solves the same
+                // slot against new geometry instead of teleporting; reroll picks a new
+                // one. angleSeed is a fraction of maxAngle, so the clamp still adapts.
                 var angleSeed = Math.random() * 2 - 1;
                 var distSeed  = Math.random();
 

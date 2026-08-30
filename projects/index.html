@@ -5,10 +5,6 @@
         <title>Projects — ptrpl4</title>
         <meta name="description" content="Projects by Pyotr Void" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <!-- Kept in sync with the active theme by syncThemeColor(); not keyed
-             on prefers-color-scheme, since the toggle is what picks the theme.
-             Dark value is the text-page --bg from main.css, not the global one. -->
-        <meta name="theme-color" content="#111c2e" />
         <meta name="color-scheme" content="dark light" />
 
         <!-- Open Graph -->
@@ -20,72 +16,27 @@
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:creator" content="@ptrpl4" />
 
-        <link rel="icon" href="../assets/favicons/favicon.svg" type="image/svg+xml" />
-        <link rel="icon" href="../assets/favicons/favicon.ico" />
-        <link rel="apple-touch-icon" href="../assets/favicons/apple-touch-icon.png" />
-        <link rel="manifest" href="../assets/favicons/site.webmanifest" />
+        <link rel="icon" href="/assets/favicons/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/assets/favicons/favicon.ico" />
+        <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon.png" />
+        <link rel="manifest" href="/assets/favicons/site.webmanifest" />
 
         <link rel="canonical" href="https://ptrpl4.page/projects/" />
 
-        <!-- The repo list is this page's main content, so overlap DNS + TLS
-             with parse rather than paying for it after the script runs.
-             `crossorigin` is required, not decorative: the list arrives via a
-             credential-less CORS fetch, and browsers key the socket pool on
-             credential mode — without it the warmed connection is the wrong one
-             and the fetch opens a second. -->
+        <!-- crossorigin is required, not decorative: the list arrives via a
+             credential-less CORS fetch and browsers key the socket pool on
+             credential mode, so without it the warmed connection is unused. -->
         <link rel="preconnect" href="https://api.github.com" crossorigin />
 
-        <link rel="stylesheet" href="../assets/css/main.css?v=14" />
+        <link rel="stylesheet" href="/assets/css/main.css?v=15" />
 
-        <script>
-            (function () {
-                // Storage can be refused outright — Safari with cookies blocked,
-                // a locked-down profile, some file:// origins. An uncaught
-                // SecurityError here would abort the rest of this block and take
-                // the toggle listener below with it, leaving a dead button. Fall
-                // back to a theme that lasts the session instead.
-                function readTheme() {
-                    try { return localStorage.getItem("theme"); } catch (e) { return null; }
-                }
-                function saveTheme(next) {
-                    try { localStorage.setItem("theme", next); } catch (e) {}
-                }
-
-                var saved = readTheme();
-                if (saved === "light" || saved === "dark") {
-                    document.documentElement.setAttribute("data-theme", saved);
-                }
-
-                // Browser chrome follows the toggle, not the OS. Values mirror --bg.
-                var BG = { dark: "#111c2e", light: "#8ab6d0" };
-                window.syncThemeColor = function (theme) {
-                    var meta = document.querySelector('meta[name="theme-color"]');
-                    if (meta) meta.setAttribute("content", BG[theme] || BG.dark);
-                };
-                syncThemeColor(document.documentElement.getAttribute("data-theme"));
-
-                // Delegated on document so this can live in <head>, where the
-                // pre-paint work already has to happen — #theme-toggle is not
-                // parsed yet. This block is identical on every page: one that
-                // needs extra work on a switch sets window.onThemeChange, which
-                // only the landing page does (to reroll the sky object).
-                document.addEventListener("click", function (e) {
-                    var t = e.target;
-                    if (!t || !t.closest || !t.closest("#theme-toggle")) return;
-                    var html = document.documentElement;
-                    var next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
-                    html.setAttribute("data-theme", next);
-                    saveTheme(next);
-                    syncThemeColor(next);
-                    if (window.onThemeChange) window.onThemeChange(next);
-                });
-            })();
-        </script>
+        <script src="/assets/js/theme.js?v=15"></script>
 
         <style>
-            /* The `text-page` body class in main.css carries the scroll fix and
-               the lighter dark --bg this page needs; the shared text-column,
-               .page-bar, a.back and h1 rules live there too. Page-local only. */
+            /* This page declares no class on <html>, so it gets main.css's
+               defaults: normal block flow and the high-contrast palette. The
+               shared text-column, .page-bar, a.back and h1 rules live there
+               too. Page-local rules only. */
             #page header {
                 margin-bottom: 2.5em;
             }
@@ -179,7 +130,7 @@
 
         </style>
     </head>
-    <body class="text-page">
+    <body>
         <main id="page">
             <div class="page-bar">
                 <a class="back" href="/">← ptrpl4.page</a>
@@ -190,14 +141,9 @@
                 <h1>Projects</h1>
             </header>
 
-            <!--
-                Apps — hand-maintained (they ship separately from their repos, and
-                the repos aren't necessarily public). Each carries a .badge naming
-                its state. FIGa is still TestFlight beta only; when its listing goes
-                live, add an "App Store ↗" .app-link alongside the TestFlight one
-                and flip its badge to `released` — here and on /projects/figa/,
-                which duplicates the link set.
-            -->
+            <!-- Hand-maintained: these ship separately from their repos, which are not
+                 necessarily public. When FIGa's listing goes live, add an App Store
+                 .app-link and flip its .badge here and on /projects/figa/. -->
             <section class="project-section">
                 <h2 class="section-title">Apps</h2>
 
@@ -342,11 +288,9 @@
                         list.appendChild(footer);
                     })
                     .catch(function () {
-                        // A throw partway through rendering would otherwise leave
-                        // partial repo rows above this message — and the appended
-                        // footer already carries id="status", so two nodes would
-                        // share the id. #project-list holds nothing but the
-                        // placeholder and JS-rendered rows, so clearing it is safe.
+                        // A throw mid-render would leave partial rows above this, and
+                        // two nodes would share id="status". Clearing is safe: the list
+                        // holds only the placeholder and JS-rendered rows.
                         list.textContent = "";
                         status.textContent = "Could not load projects. View them on ";
                         status.appendChild(link(null, "GitHub", "https://github.com/ptrpl4"));
