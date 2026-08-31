@@ -80,11 +80,19 @@ body {
 /* Centring is opt-in: a flex item taller than an align-items:center container
    overflows above it, at a negative scroll offset, unreachable. A page that
    forgets this class should merely fail to centre. */
+/* overflow: hidden clips nothing visible -- anything past the viewport box is
+   off-screen already. It exists to stop the orbiting satellite making the page
+   scrollable: it clears .space by 50px at the bottom and comes within ~1px of
+   the right edge at 320px, and the two scrollbars then trigger each other, each
+   one stealing the axis the other needs. The width change drags the fixed
+   #theme-toggle sideways. A fixed-size centred scene should not scroll anyway.
+   Propagates to the viewport, since html keeps overflow: visible. */
 html.landing body {
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 }
 
 ol,
@@ -398,9 +406,21 @@ button:focus-visible {
     line-height: 1.6;
 }
 
-#header .page-links {
+/* Stacked, so the block's outer spacing lives here — and the font-size with it.
+   Left on the links, these margins would resolve against #header's inherited
+   1.4167rem instead of the link's 0.66em of it, and come out 1.52x larger.
+   align-items: center is load-bearing: the column default is stretch, which
+   would run each dotted underline the full width of the header. */
+#header .page-links-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     font-size: 0.66em;
+    gap: 0.15em;
     margin: 0.2em 0 0.8em;
+}
+
+#header .page-links {
     opacity: 0.75;
     border-bottom: dotted 1px currentColor;
     display: inline-block;
@@ -412,7 +432,7 @@ button:focus-visible {
 }
 
 /* Same id-specificity problem as #theme-toggle below: the generic
-   a:focus-visible is (0,1,1) and loses to the 0.55 above, dimming the ring. */
+   a:focus-visible is (0,1,1) and loses to the 0.75 above, dimming the ring. */
 #header .page-links:focus-visible {
     opacity: 1;
 }
@@ -464,7 +484,8 @@ button:focus-visible {
    pages, so navigating between them does not shift the measure. */
 #page,
 .app-page,
-.legal-page {
+.legal-page,
+.cv-page {
     max-width: 32em;
     margin: 0 auto;
     padding: 3em 2em 4em;
@@ -482,9 +503,9 @@ button:focus-visible {
 }
 
 /* In the bar the toggle is a flex item, not pinned to the viewport corner.
-   index.html and 404.html have no bar and keep the fixed default below —
-   including its lighter 0.45, which suits a glyph floating over the scene but
-   not one sitting in a row of text. */
+   index.html and 404.html have no bar and keep the fixed default below.
+   Position only: the fade is 0.75 everywhere since 0.45 composited to
+   2.00-2.74:1, under the 3:1 floor a control has to clear. */
 .page-bar #theme-toggle {
     position: static;
 }
@@ -492,7 +513,8 @@ button:focus-visible {
 /* One heading size for every text page */
 #page header h1,
 .app-page h1,
-.legal-page h1 {
+.legal-page h1,
+.cv-page h1 {
     font-size: 1.9em;
     font-weight: 700;
     letter-spacing: -0.03em;
@@ -667,6 +689,108 @@ a.back:hover {
     border-color: transparent;
 }
 
+/* CV — /cv/. Same 32em column and heading size as every other text page; the
+   rules below are the entry list only. Two tiers, 0.85 and 0.75, like .legal-page. */
+.cv-page .cv-role {
+    font-size: 0.82em;
+    opacity: 0.85;
+    margin-top: 0.4em;
+}
+
+/* Pushed to the far end of the contact row. `auto` rather than a fixed offset,
+   so when .cv-contact wraps the clock simply starts its own line. Tabular figures
+   because it is flush right: proportional digits are unequal widths, so 11:11 and
+   00:08 would shift the whole string sideways as the minute ticks over. */
+#cv-clock {
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Wraps to one link per line under ~360px rather than overflowing the column. */
+.cv-page .cv-contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2em 1em;
+    font-size: 0.68em;
+    opacity: 0.75;
+    margin-top: 0.8em;
+}
+
+.cv-section {
+    margin-top: 2.1em;
+}
+
+.cv-section h2 {
+    font-size: 0.72em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.75;
+    padding-bottom: 0.6em;
+    border-bottom: solid 1px var(--border-subtle);
+}
+
+.cv-entry {
+    margin-top: 1.4em;
+}
+
+.cv-entry h3 {
+    font-size: 0.9em;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+/* Follows .cv-desc now, not the heading, so it needs a real gap. */
+.cv-entry .cv-meta {
+    font-size: 0.72em;
+    opacity: 0.75;
+    margin-top: 0.4em;
+}
+
+/* Weight, not colour: .cv-meta is already at the 0.75 floor, and a child cannot
+   brighten past a parent's opacity layer. */
+.cv-lang {
+    font-weight: 600;
+}
+
+/* Rides on the same line as the app name, so it has to shed the h3's size and
+   weight. */
+.cv-entry .cv-store {
+    margin-left: 0.7em;
+    font-size: 0.8em;
+    font-weight: 400;
+}
+
+.cv-desc {
+    font-size: 0.78em;
+    opacity: 0.85;
+    line-height: 1.6;
+    margin-top: 0.3em;
+}
+
+/* The reset sets `list-style: none` on every ul; restoring a real marker here
+   also restores the list semantics Safari drops from an unmarkered list. */
+.cv-bullets {
+    list-style: disc;
+    padding-left: 1.1em;
+    margin-top: 0.5em;
+}
+
+.cv-bullets li {
+    font-size: 0.78em;
+    opacity: 0.85;
+    line-height: 1.6;
+    margin-top: 0.3em;
+}
+
+/* Points on to /projects/. Inside a section rather than between two, so it
+   takes the entry gap. */
+.cv-more {
+    font-size: 0.72em;
+    opacity: 0.75;
+    margin-top: 1.4em;
+}
+
 /* Projects list — page-local, but cached with everything else. */
 /* This page declares no class on <html>, so it gets main.css's
    defaults: normal block flow and the high-contrast palette. The
@@ -811,9 +935,10 @@ a.back:hover {
     opacity: 0.9;
 }
 
-/* opacity composites the outline too, so the generic ring would draw at 0.45 —
-   about 2:1, under the 3:1 floor for focus indicators. Must carry the id to
-   outrank `.page-bar #theme-toggle`. */
+/* opacity composites the outline too, so the generic ring would draw at the
+   toggle's own 0.75 — 3.41:1 on the light landing page, clearing the 3:1 floor
+   for focus indicators by almost nothing. Carries the id to outrank
+   `#theme-toggle` (1,0,0); the .page-bar rule sets no opacity to fight. */
 #theme-toggle:focus-visible {
     opacity: 1;
 }
@@ -871,13 +996,15 @@ a.back:hover {
 
     #page,
     .app-page,
-    .legal-page {
+    .legal-page,
+    .cv-page {
         padding: 2.5em 1.5em 3em;
     }
 
     #page header h1,
     .app-page h1,
-    .legal-page h1 {
+    .legal-page h1,
+    .cv-page h1 {
         font-size: 1.5em;
     }
 
@@ -932,5 +1059,83 @@ a.back:hover {
     #comet {
         top: 65px;
         left: 81.67%; /* 245/300 */
+    }
+}
+
+/* Print — the page saves as a PDF through the browser's own dialog, so this is
+   the whole export path. Every screen rule above is behind `@media screen`, so
+   none of the breakpoints apply here. */
+@media print {
+    /* Neither palette survives: browsers omit background colours when printing,
+       which would leave light --fg on the paper's white. Same selector shapes as
+       the declarations above, so no specificity tie. */
+    :root,
+    [data-theme="dark"],
+    [data-theme="light"] {
+        --bg: #fff;
+        --fg: #000;
+        --border-subtle: rgba(0, 0, 0, 0.25);
+    }
+
+    @page {
+        margin: 15mm;
+    }
+
+    /* pt is correct here and wrong on screen: paper has no reader font-size
+       setting to inherit, and 1.4167rem is display size on a sheet. */
+    body {
+        font-size: 11pt;
+        font-weight: 400;
+        line-height: 1.5;
+        min-width: 0;
+    }
+
+    .cv-page {
+        max-width: none;
+        padding: 0;
+        animation: none;
+    }
+
+    /* A back link and a theme toggle mean nothing on paper. */
+    .page-bar {
+        display: none;
+    }
+
+    /* fadeIn ends at opacity 1, but an interrupted print would capture it
+       mid-fade. */
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    .cv-entry,
+    .cv-section {
+        break-inside: avoid;
+    }
+
+    /* A clock is wrong the moment the sheet leaves the printer. */
+    #cv-clock {
+        display: none;
+    }
+
+    /* Off-site targets are lost when the page becomes paper. .cv-store, not
+       .cv-entry a: the only other external link in an entry is Full history's,
+       and the contact row prints that URL already. */
+    .cv-page .cv-contact a[href^="http"]::after,
+    .cv-page .cv-store::after {
+        content: " (" attr(href) ")";
+        font-size: 0.85em;
+        opacity: 0.75;
+    }
+
+    /* Separate rule, because the content differs: attr(href) here would print
+       the mailto: whole, subject parameter and percent-escapes included, and
+       print /projects/ as a root-relative path no reader can use. */
+    .cv-page a[data-print]::after {
+        content: " (" attr(data-print) ")";
+        font-size: 0.85em;
+        opacity: 0.75;
     }
 }
