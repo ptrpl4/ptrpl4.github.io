@@ -263,14 +263,20 @@ button:focus-visible {
     100% { opacity: 0; transform: translate(-310px, 225px); }
 }
 
-/* Clouds — full coverage cloud deck with variation so it reads as texture not flat */
-.circle::before {
+/* Geometry only, shared. In dark ::after gets no background, so it is an empty
+   box that paints nothing; the theme rules below supply the paint. */
+.circle::before,
+.circle::after {
     content: '';
     position: absolute;
     inset: 0;
     border-radius: 50%;
     z-index: -1;
     pointer-events: none;
+}
+
+/* Clouds — full coverage cloud deck with variation so it reads as texture not flat */
+.circle::before {
     background:
         radial-gradient(ellipse 85% 45% at 30% 28%, rgba(210, 220, 235, 0.42) 30%, transparent 80%),
         radial-gradient(ellipse 75% 40% at 72% 22%, rgba(210, 220, 235, 0.38) 30%, transparent 80%),
@@ -286,12 +292,16 @@ button:focus-visible {
    than the spokes a single rotating conic would give.
 
    Each layer opens with an opaque var(--circle-bg) disc, so the arms are erased
-   from the middle and #header keeps a flat backing. That stop is the contrast
-   guarantee, and it is the one thing verify-docs.js cannot see — it measures
-   text against --circle-bg alone and has no idea what these gradients do. */
+   from the middle and #header keeps a flat backing.
+
+   closest-side, not the default farthest-corner: the box is square, so the
+   corner is the radius x sqrt(2) and every percentage silently meant 1.41 times
+   less than it read. 46% was 65% of the radius. Sized this way the numbers mean
+   fractions of the disc, which is the only reading under which they can be
+   sanity-checked against where #header actually sits. */
 [data-theme="light"] .circle::before {
     background:
-        radial-gradient(circle at 50% 50%, var(--circle-bg) 46%, transparent 78%),
+        radial-gradient(circle closest-side at 50% 50%, var(--circle-bg) 65%, transparent 110%),
         conic-gradient(from 0deg at 50% 50%,
             transparent 0deg, rgba(255, 198, 116, 0.5) 46deg, transparent 104deg,
             transparent 120deg, rgba(255, 174, 84, 0.42) 166deg, transparent 224deg,
@@ -300,14 +310,8 @@ button:focus-visible {
 }
 
 [data-theme="light"] .circle::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    z-index: -1;
-    pointer-events: none;
     background:
-        radial-gradient(circle at 50% 50%, var(--circle-bg) 34%, transparent 62%),
+        radial-gradient(circle closest-side at 50% 50%, var(--circle-bg) 48%, transparent 88%),
         conic-gradient(from 55deg at 50% 50%,
             transparent 0deg, rgba(255, 226, 176, 0.34) 60deg, transparent 130deg,
             transparent 180deg, rgba(255, 200, 130, 0.3) 240deg, transparent 310deg);
