@@ -15,9 +15,13 @@
                 minute: "2-digit",
                 hourCycle: "h23",
             }).format(new Date());
-            var hour = parseInt(time, 10);
-            clock.textContent = (hour >= 8 && hour < 22 ? "☀️ " : "🌙 ") +
-                time + " here";
+            /* Kuala Lumpur is 3°N, so sunrise and sunset barely move across the
+               year — about 07:00 and 19:20, give or take a quarter hour. Fixed
+               boundaries are accurate here in a way they would not be at a
+               higher latitude, and with no DST they stay accurate. */
+            var minutes = parseInt(time, 10) * 60 + parseInt(time.slice(3), 10);
+            var daylight = minutes >= 7 * 60 && minutes < 19 * 60 + 30;
+            clock.textContent = (daylight ? "☀️ " : "🌙 ") + time + " here";
         } catch (e) {
             /* An Intl build without the tz database: the span stays empty. */
         }

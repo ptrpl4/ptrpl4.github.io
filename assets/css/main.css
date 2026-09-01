@@ -550,7 +550,7 @@ button:focus-visible {
 /* Two tiers and no others: 0.85 for body copy, 0.75 for secondary. 0.75 is the
    floor — below it the composite drops under 4.5:1 against either --bg. Size,
    weight, case and letter-spacing carry hierarchy instead. */
-.app-page .desc {
+.app-page .app-desc {
     font-size: 0.82em;
     opacity: 0.75;
     margin-top: 1em;
@@ -655,10 +655,6 @@ a.back:hover {
 }
 
 /* Privacy policy — /projects/<app>/privacy/ */
-.legal-page {
-    text-align: left;
-}
-
 .legal-page .meta {
     font-size: 0.68em;
     opacity: 0.75;
@@ -691,29 +687,32 @@ a.back:hover {
 
 /* CV — /cv/. Same 32em column and heading size as every other text page; the
    rules below are the entry list only. Two tiers, 0.85 and 0.75, like .legal-page. */
-.cv-page .cv-role {
+/* No margin-top: it shares the header's row with the <h1> now. */
+.cv-role {
     font-size: 0.82em;
     opacity: 0.85;
-    margin-top: 0.4em;
 }
 
 /* Pushed to the far end of the contact row. `auto` rather than a fixed offset,
-   so when .cv-contact wraps the clock simply starts its own line. Tabular figures
-   because it is flush right: proportional digits are unequal widths, so 11:11 and
-   00:08 would shift the whole string sideways as the minute ticks over. */
+   so the clock simply starts its own line when the row wraps. Tabular figures
+   because it is flush right: proportional digits are unequal widths, so 11:11
+   and 00:08 would shift the whole string sideways every minute. */
 #cv-clock {
     margin-left: auto;
     font-variant-numeric: tabular-nums;
 }
 
-/* Wraps to one link per line under ~360px rather than overflowing the column. */
-.cv-page .cv-contact {
+/* One row: the four links, then the clock at the far end. 0.78em and 0.5em
+   match .cv-bullets, so every section's first line sits at the same size and
+   offset. Wraps to one item per line on a narrow screen rather than
+   overflowing the column. */
+.cv-contact {
     display: flex;
     flex-wrap: wrap;
     gap: 0.2em 1em;
-    font-size: 0.68em;
+    font-size: 0.78em;
     opacity: 0.75;
-    margin-top: 0.8em;
+    margin-top: 0.5em;
 }
 
 .cv-section {
@@ -740,11 +739,22 @@ a.back:hover {
     line-height: 1.4;
 }
 
-/* Follows .cv-desc now, not the heading, so it needs a real gap. */
-.cv-entry .cv-meta {
+/* Title row, shared by the page header and each project entry: the name at the
+   left, the qualifier pushed to the far right. space-between rather than
+   margin-left: auto, so when FIGa's four platforms no longer fit beside the
+   name — below roughly 420px — the wrapped line starts at the left edge
+   instead of hanging off the right. */
+.cv-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0 1em;
+}
+
+.cv-meta {
     font-size: 0.72em;
     opacity: 0.75;
-    margin-top: 0.4em;
 }
 
 /* Weight, not colour: .cv-meta is already at the 0.75 floor, and a child cannot
@@ -755,17 +765,10 @@ a.back:hover {
 
 /* Rides on the same line as the app name, so it has to shed the h3's size and
    weight. */
-.cv-entry .cv-store {
+.cv-store {
     margin-left: 0.7em;
     font-size: 0.8em;
     font-weight: 400;
-}
-
-.cv-desc {
-    font-size: 0.78em;
-    opacity: 0.85;
-    line-height: 1.6;
-    margin-top: 0.3em;
 }
 
 /* The reset sets `list-style: none` on every ul; restoring a real marker here
@@ -776,19 +779,14 @@ a.back:hover {
     margin-top: 0.5em;
 }
 
+/* Body text of a section: the project descriptions and every bullet. One rule
+   because they are the same thing at the same level, and two would drift. */
+.cv-desc,
 .cv-bullets li {
     font-size: 0.78em;
     opacity: 0.85;
     line-height: 1.6;
     margin-top: 0.3em;
-}
-
-/* Points on to /projects/. Inside a section rather than between two, so it
-   takes the entry gap. */
-.cv-more {
-    font-size: 0.72em;
-    opacity: 0.75;
-    margin-top: 1.4em;
 }
 
 /* Projects list — page-local, but cached with everything else. */
@@ -1121,8 +1119,8 @@ a.back:hover {
     }
 
     /* Off-site targets are lost when the page becomes paper. .cv-store, not
-       .cv-entry a: the only other external link in an entry is Full history's,
-       and the contact row prints that URL already. */
+       .cv-entry a: the project names link to this same site, and printing a
+       path no reader can type helps nobody. */
     .cv-page .cv-contact a[href^="http"]::after,
     .cv-page .cv-store::after {
         content: " (" attr(href) ")";

@@ -34,7 +34,7 @@
     function fallbackNote(leading) {
         var p = el("p", null, leading);
         p.id = "status";
-        p.appendChild(link(null, "GitHub", "https://github.com/ptrpl4"));
+        p.appendChild(link(null, "GitHub ↗", "https://github.com/ptrpl4"));
         p.appendChild(document.createTextNode("."));
         return p;
     }
@@ -72,7 +72,7 @@
                 var home = safeUrl(repo.homepage);
                 if (home) {
                     item.appendChild(document.createTextNode(" "));
-                    item.appendChild(link("project-live", "↗ live", home));
+                    item.appendChild(link("project-live", "live ↗", home));
                 }
 
                 if (repo.description) {
@@ -105,7 +105,7 @@
             // holds only the placeholder and JS-rendered rows.
             list.textContent = "";
             status.textContent = "Could not load projects. View them on ";
-            status.appendChild(link(null, "GitHub", "https://github.com/ptrpl4"));
+            status.appendChild(link(null, "GitHub ↗", "https://github.com/ptrpl4"));
             status.appendChild(document.createTextNode("."));
             list.appendChild(status);
         });

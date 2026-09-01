@@ -35,32 +35,36 @@
                 <button id="theme-toggle" aria-label="Toggle theme">◐</button>
             </div>
 
-            <header>
+            <header class="cv-head">
                 <h1>Peter Ego</h1>
                 <p class="cv-role">Software engineer</p>
-                <!-- Only the @ is encoded — enough to miss a plain address regex,
-                     and readable, unlike the landing page's full encoding. Noise
-                     reduction, not protection. data-print carries the bare address:
-                     the link text is not one, and the href would print the subject. -->
-                <p class="cv-contact">
-                    <a href="https://github.com/ptrpl4" target="_blank" rel="noopener">GitHub ↗</a>
-                    <a href="https://www.linkedin.com/in/petreg/" target="_blank" rel="noopener">LinkedIn ↗</a>
-                    <a href="mailto:nice.job&#64;ptrpl4.page?subject=Hi,%20Peter!%20Nice%20CV%20and%20skills,%20let's%20talk!" data-print="nice.job&#64;ptrpl4.page">Email ↗</a>
-                    <a href="https://t.me/ptrpl4" target="_blank" rel="noopener">Telegram ↗</a>
-                    <!-- Filled by cv.js; empty without it, and hidden in print. -->
-                    <span id="cv-clock"></span>
-                </p>
             </header>
 
             <section class="cv-section">
                 <h2>Highlights</h2>
                 <div class="cv-entry">
                     <ul class="cv-bullets" role="list">
-                        <li>8 years in R&amp;D.</li>
-                        <li>I am ready to lead dev and QA teams.</li>
-                        <li>I can build QA infrastructure from scratch, or rebuild what&rsquo;s there.</li>
-                        <li>I know where AI helps, and where it doesn&rsquo;t.</li>
-                        <li>I like mentoring, and making new tooling actually stick in a team.</li>
+                        <li>9 years across R&amp;D projects in gamedev, fintech, medtech and social.</li>
+                        <li>Tested native iOS/Android apps, frontend SPAs, high-load microservices.</li>
+                        <li>Build QA infrastructure from scratch, or rebuild what&rsquo;s there.</li>
+                        <li>Ready to lead dev and QA teams, or work as a QA Architect.</li>
+                        <li>Hire, mentor, and run education tracks; own deadlines and quality.</li>
+                        <li>Know where AI helps, and where it doesn&rsquo;t.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="cv-section">
+                <h2>Toolkit</h2>
+                <div class="cv-entry">
+                    <ul class="cv-bullets" role="list">
+                        <li>Languages: Python, Go, Swift, TypeScript, Bash.</li>
+                        <li>Testing: Playwright, pytest, Bruno, Qase, Browserstack.</li>
+                        <li>Platform: Kubernetes, GitLab CI, GCP, Temporal, RabbitMQ.</li>
+                        <li>Data: PostgreSQL, CockroachDB, MongoDB, Redis.</li>
+                        <li>Observability: Grafana, Prometheus, Datadog, Sentry.</li>
+                        <li>LLM: Claude Code, Codex, Ollama.</li>
+                        <li>Process: SAFe, Scrum.</li>
                     </ul>
                 </div>
             </section>
@@ -72,40 +76,40 @@
                 <h2>Projects</h2>
 
                 <div class="cv-entry">
-                    <h3><a href="/projects/clauss/">Clauss</a><a class="cv-store" href="https://apps.apple.com/app/clauss/id6781245231" target="_blank" rel="noopener">App Store ↗</a></h3>
+                    <div class="cv-head">
+                        <h3><a href="/projects/clauss/">Clauss</a><a class="cv-store" href="https://apps.apple.com/app/clauss/id6781245231" target="_blank" rel="noopener">App Store ↗</a></h3>
+                        <p class="cv-meta"><span class="cv-lang">Swift</span> &mdash; macOS</p>
+                    </div>
                     <p class="cv-desc">Menu-bar manager for Claude Code sessions.</p>
-                    <p class="cv-meta"><span class="cv-lang">Swift</span> &mdash; macOS</p>
                 </div>
 
                 <div class="cv-entry">
-                    <h3><a href="/projects/figa/">FIGa</a><a class="cv-store" href="https://testflight.apple.com/join/xfRUWHhb" target="_blank" rel="noopener">TestFlight ↗</a></h3>
+                    <div class="cv-head">
+                        <h3><a href="/projects/figa/">FIGa</a><a class="cv-store" href="https://testflight.apple.com/join/xfRUWHhb" target="_blank" rel="noopener">TestFlight ↗</a></h3>
+                        <p class="cv-meta"><span class="cv-lang">Swift</span> &mdash; iOS &middot; iPadOS &middot; macOS &middot; tvOS</p>
+                    </div>
                     <p class="cv-desc">On-device network content filter — local DNS filtering.</p>
-                    <p class="cv-meta"><span class="cv-lang">Swift</span> &mdash; iOS &middot; iPadOS &middot; macOS &middot; tvOS</p>
-                </div>
-
-                <!-- data-print so the printed sheet carries the URL; the existing
-                     a[data-print] print rule does the rest. -->
-                <p class="cv-more">More, including open source &rarr;
-                    <a href="/projects/" data-print="ptrpl4.page/projects/">projects page</a></p>
-            </section>
-
-            <section class="cv-section">
-                <h2>Stack</h2>
-                <div class="cv-entry">
-                    <ul class="cv-bullets" role="list">
-                        <li>Swift, Python, Go, JavaScript, TypeScript, Bash.</li>
-                        <li>GitLab, GitHub, GCP, Datadog, Playwright, Bruno, Atlassian, Claude Code.</li>
-                    </ul>
                 </div>
             </section>
 
             <section class="cv-section">
-                <h2>Full history</h2>
+                <h2>Contacts</h2>
                 <div class="cv-entry">
-                    <h3><a href="https://www.linkedin.com/in/petreg/" target="_blank" rel="noopener">LinkedIn ↗</a></h3>
-                    <p class="cv-desc">This page keeps the highlights. The complete record is there.</p>
+                    <p class="cv-contact">
+                        <a href="https://github.com/ptrpl4" target="_blank" rel="noopener">GitHub ↗</a>
+                        <a href="https://www.linkedin.com/in/petreg/" target="_blank" rel="noopener">LinkedIn ↗</a>
+                        <a href="https://t.me/ptrpl4" target="_blank" rel="noopener">Telegram ↗</a>
+                        <!-- Only the @ is encoded — enough to miss a plain address
+                             regex, and readable, unlike the landing page's full
+                             encoding. data-print carries the bare address: the link
+                             text is not one, and the href would print the subject. -->
+                        <a href="mailto:nice.job&#64;ptrpl4.page?subject=Hi,%20Peter!%20Nice%20CV%20and%20skills,%20let's%20talk!" data-print="nice.job&#64;ptrpl4.page">Email ↗</a>
+                        <!-- Filled by cv.js; empty without it, and hidden in print. -->
+                        <span id="cv-clock"></span>
+                    </p>
                 </div>
             </section>
+
         </main>
     </body>
 </html>
