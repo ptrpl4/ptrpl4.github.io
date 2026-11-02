@@ -941,6 +941,15 @@ a.back:hover {
     opacity: 1;
 }
 
+/* Cross-fade between pages, same-origin only. Behind no-preference rather than
+   relying on the reduced-motion block below, which does not reach the
+   ::view-transition pseudo-elements' default animation. */
+@media (prefers-reduced-motion: no-preference) {
+    @view-transition {
+        navigation: auto;
+    }
+}
+
 /* Every animation ends on its resting frame, so collapsing durations degrades
    cleanly to the static scene. */
 @media (prefers-reduced-motion: reduce) {

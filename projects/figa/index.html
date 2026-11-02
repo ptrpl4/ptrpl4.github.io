@@ -13,6 +13,9 @@
         <meta property="og:title" content="FIGa — ptrpl4" />
         <meta property="og:description" content="On-device network content filter (iOS · iPadOS · macOS · tvOS)" />
         <meta property="og:image" content="https://ptrpl4.page/assets/favicons/web-app-manifest-512x512.png" />
+        <meta property="og:image:width" content="512" />
+        <meta property="og:image:height" content="512" />
+        <meta property="og:image:alt" content="A dark planet with a crescent moon" />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:creator" content="@ptrpl4" />
 
@@ -22,6 +25,34 @@
         <link rel="manifest" href="/assets/favicons/site.webmanifest" />
 
         <link rel="canonical" href="https://ptrpl4.page/projects/figa/" />
+
+        <!-- Structured data. Inert: a JSON block, not a script that runs. -->
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "FIGa",
+            "description": "On-device network content filter — local DNS filtering.",
+            "operatingSystem": "iOS, iPadOS, macOS, tvOS",
+            "applicationCategory": "UtilitiesApplication",
+            "url": "https://ptrpl4.page/projects/figa/",
+            "author": {
+                "@type": "Person",
+                "name": "Peter Ego",
+                "url": "https://ptrpl4.page/"
+            }
+        }
+        </script>
+
+        <!-- Same-origin links prerender on hover. /projects/ is only prefetched:
+             prerendering it would spend a GitHub API call (60/h per IP) on
+             every hover, clicked or not. Unsupported browsers ignore this. -->
+        <script type="speculationrules">
+        {
+            "prerender": [{ "where": { "and": [{ "href_matches": "/*" }, { "not": { "href_matches": "/projects/" } }] }, "eagerness": "moderate" }],
+            "prefetch": [{ "where": { "href_matches": "/projects/" }, "eagerness": "moderate" }]
+        }
+        </script>
 
         <link rel="stylesheet" href="/assets/css/main.css" />
 
