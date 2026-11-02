@@ -13,6 +13,9 @@
         <meta property="og:title" content="Clauss — ptrpl4" />
         <meta property="og:description" content="Menu-bar manager for Claude Code sessions (macOS)" />
         <meta property="og:image" content="https://ptrpl4.page/assets/favicons/web-app-manifest-512x512.png" />
+        <meta property="og:image:width" content="512" />
+        <meta property="og:image:height" content="512" />
+        <meta property="og:image:alt" content="A dark planet with a crescent moon" />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:creator" content="@ptrpl4" />
 
@@ -22,6 +25,36 @@
         <link rel="manifest" href="/assets/favicons/site.webmanifest" />
 
         <link rel="canonical" href="https://ptrpl4.page/projects/clauss/" />
+
+        <!-- Structured data. Inert: a JSON block, not a script that runs. -->
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Clauss",
+            "description": "Menu-bar manager for Claude Code sessions.",
+            "operatingSystem": "macOS",
+            "applicationCategory": "DeveloperApplication",
+            "url": "https://ptrpl4.page/projects/clauss/",
+            "installUrl": "https://apps.apple.com/app/clauss/id6781245231",
+            "image": "https://ptrpl4.page/projects/clauss/icon.png",
+            "author": {
+                "@type": "Person",
+                "name": "Peter Ego",
+                "url": "https://ptrpl4.page/"
+            }
+        }
+        </script>
+
+        <!-- Same-origin links prerender on hover. /projects/ is only prefetched:
+             prerendering it would spend a GitHub API call (60/h per IP) on
+             every hover, clicked or not. Unsupported browsers ignore this. -->
+        <script type="speculationrules">
+        {
+            "prerender": [{ "where": { "and": [{ "href_matches": "/*" }, { "not": { "href_matches": "/projects/" } }] }, "eagerness": "moderate" }],
+            "prefetch": [{ "where": { "href_matches": "/projects/" }, "eagerness": "moderate" }]
+        }
+        </script>
 
         <link rel="stylesheet" href="/assets/css/main.css" />
 
@@ -36,7 +69,13 @@
 
             <div class="app-title">
                 <h1>Clauss</h1>
-                <img class="app-icon" src="/projects/clauss/icon.png" width="256" height="256" alt="" />
+                <!-- AVIF 16 KB, WebP 21 KB, PNG 40 KB; the browser takes the first it
+                     can decode. Regenerate both from icon.png if the artwork changes. -->
+                <picture>
+                    <source type="image/avif" srcset="/projects/clauss/icon.avif" />
+                    <source type="image/webp" srcset="/projects/clauss/icon.webp" />
+                    <img class="app-icon" src="/projects/clauss/icon.png" width="256" height="256" alt="" />
+                </picture>
                 <span class="badge">released</span>
             </div>
             <p class="app-desc">Menu-bar manager for Claude Code sessions.</p>

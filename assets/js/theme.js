@@ -48,6 +48,20 @@
         });
     }
 
+    // A page prerendered by the speculation rules ran this script before the
+    // visitor arrived; a toggle made on the referring page in between would be
+    // missed. Re-read on activation so the choice still holds.
+    if (document.prerendering) {
+        document.addEventListener("prerenderingchange", function () {
+            var s = readTheme();
+            if ((s === "light" || s === "dark") && s !== html.getAttribute("data-theme")) {
+                html.setAttribute("data-theme", s);
+                syncThemeColor();
+                if (window.onThemeChange) window.onThemeChange(s);
+            }
+        }, { once: true });
+    }
+
     // Delegated because #theme-toggle is not parsed yet; closest() rather than
     // an id test on e.target, which breaks if the button gains a child.
     document.addEventListener("click", function (e) {
