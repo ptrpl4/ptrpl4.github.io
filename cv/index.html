@@ -30,30 +30,12 @@
         <script type="application/ld+json">
         {
             "@context": "https://schema.org",
-            "@type": "ProfilePage",
+            "@type": "WebPage",
             "url": "https://ptrpl4.page/cv/",
-            "mainEntity": {
-                "@type": "Person",
-                "name": "Peter Ego",
-                "jobTitle": "Software Engineer",
-                "url": "https://ptrpl4.page/",
-                "sameAs": [
-                    "https://github.com/ptrpl4",
-                    "https://twitter.com/ptrpl4",
-                    "https://www.linkedin.com/in/petreg/",
-                    "https://t.me/ptrpl4"
-                ]
+            "name": "CV",
+            "about": {
+                "@id": "https://ptrpl4.page/#me"
             }
-        }
-        </script>
-
-        <!-- Same-origin links prerender on hover. /projects/ is only prefetched:
-             prerendering it would spend a GitHub API call (60/h per IP) on
-             every hover, clicked or not. Unsupported browsers ignore this. -->
-        <script type="speculationrules">
-        {
-            "prerender": [{ "where": { "and": [{ "href_matches": "/*" }, { "not": { "href_matches": "/projects/" } }] }, "eagerness": "moderate" }],
-            "prefetch": [{ "where": { "href_matches": "/projects/" }, "eagerness": "moderate" }]
         }
         </script>
 

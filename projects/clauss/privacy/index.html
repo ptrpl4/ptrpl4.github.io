@@ -13,16 +13,6 @@
         <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon.png" />
         <link rel="manifest" href="/assets/favicons/site.webmanifest" />
 
-        <!-- Same-origin links prerender on hover. /projects/ is only prefetched:
-             prerendering it would spend a GitHub API call (60/h per IP) on
-             every hover, clicked or not. Unsupported browsers ignore this. -->
-        <script type="speculationrules">
-        {
-            "prerender": [{ "where": { "and": [{ "href_matches": "/*" }, { "not": { "href_matches": "/projects/" } }] }, "eagerness": "moderate" }],
-            "prefetch": [{ "where": { "href_matches": "/projects/" }, "eagerness": "moderate" }]
-        }
-        </script>
-
         <link rel="stylesheet" href="/assets/css/main.css" />
 
         <script src="/assets/js/theme.js"></script>
