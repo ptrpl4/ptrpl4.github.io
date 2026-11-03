@@ -941,6 +941,16 @@ a.back:hover {
     opacity: 1;
 }
 
+/* Set by theme.js only while a speculation rule prerenders the page; see the
+   comment there. Paused, not removed, so each animation resumes from its first
+   frame on activation. */
+html.prerendering *,
+html.prerendering *::before,
+html.prerendering *::after {
+    animation-play-state: paused !important;
+    transition: none !important;
+}
+
 /* Cross-fade between pages, same-origin only. Behind no-preference rather than
    relying on the reduced-motion block below, which does not reach the
    ::view-transition pseudo-elements' default animation. */

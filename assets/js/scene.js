@@ -91,10 +91,13 @@
         }, 150);
     });
 
-    // Runs after the head script's own toggle work. A theme switch
-    // is the one time the sky object rerolls to a new slot.
-    window.onThemeChange = function (next) {
-        placeSkyObject(true, true);
+    // Runs after the head script's own toggle work. A toggle is the one
+    // time the sky object rerolls to a new slot. silent is a prerendered
+    // page catching up on activation: it should look like a cold load, so
+    // the object is placed in its existing slot without animating.
+    window.onThemeChange = function (next, opts) {
+        var silent = opts && opts.silent;
+        placeSkyObject(!silent, !silent);
         if (next === "dark") setMoonPhase();
     };
 })();

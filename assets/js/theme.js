@@ -48,17 +48,44 @@
         });
     }
 
-    // A page prerendered by the speculation rules ran this script before the
-    // visitor arrived; a toggle made on the referring page in between would be
-    // missed. Re-read on activation so the choice still holds.
+    // One copy for every page, inserted here because each <head> already loads
+    // this script. Same-origin links prerender on hover; /projects/ is only
+    // prefetched, since prerendering it spends a GitHub API call (60/h per IP)
+    // on every hover, clicked or not. Exclude any other API-backed page here.
+    if (window.HTMLScriptElement && HTMLScriptElement.supports &&
+        HTMLScriptElement.supports("speculationrules")) {
+        var rules = document.createElement("script");
+        rules.type = "speculationrules";
+        rules.textContent = JSON.stringify({
+            prerender: [{
+                where: { and: [{ href_matches: "/*" }, { not: { href_matches: "/projects/" } }] },
+                eagerness: "moderate",
+            }],
+            prefetch: [{ where: { href_matches: "/projects/" }, eagerness: "moderate" }],
+        });
+        document.head.appendChild(rules);
+    }
+
+    // A prerendered page runs ahead of the visit. html.prerendering (main.css)
+    // holds animations at frame zero, so one-shot intros play on arrival rather
+    // than unseen before it, and turns transitions off. On activation the theme
+    // is re-read, since a toggle on the referring page may have come after the
+    // prerender started; Chrome hands over the initiator's sessionStorage at
+    // that point. The class is still on while the theme changes, so the page
+    // arrives painted in the right theme instead of fading into it, the way a
+    // cold load would.
     if (document.prerendering) {
+        html.classList.add("prerendering");
         document.addEventListener("prerenderingchange", function () {
             var s = readTheme();
             if ((s === "light" || s === "dark") && s !== html.getAttribute("data-theme")) {
                 html.setAttribute("data-theme", s);
                 syncThemeColor();
-                if (window.onThemeChange) window.onThemeChange(s);
+                // silent: re-place without the toggle's animated reroll.
+                if (window.onThemeChange) window.onThemeChange(s, { silent: true });
             }
+            html.offsetHeight; // flush styles with transitions still off
+            html.classList.remove("prerendering");
         }, { once: true });
     }
 

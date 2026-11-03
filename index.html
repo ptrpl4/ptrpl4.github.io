@@ -30,7 +30,8 @@
 
         <link rel="canonical" href="https://ptrpl4.page/" />
 
-        <!-- Structured data. Inert: a JSON block, not a script that runs. -->
+        <!-- Structured data. Inert: a JSON block, not a script that runs. The one
+             full Person; other pages refer to it by @id. -->
         <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -38,6 +39,7 @@
             "url": "https://ptrpl4.page/",
             "mainEntity": {
                 "@type": "Person",
+                "@id": "https://ptrpl4.page/#me",
                 "name": "Peter Ego",
                 "jobTitle": "Software Engineer",
                 "url": "https://ptrpl4.page/",
@@ -48,16 +50,6 @@
                     "https://t.me/ptrpl4"
                 ]
             }
-        }
-        </script>
-
-        <!-- Same-origin links prerender on hover. /projects/ is only prefetched:
-             prerendering it would spend a GitHub API call (60/h per IP) on
-             every hover, clicked or not. Unsupported browsers ignore this. -->
-        <script type="speculationrules">
-        {
-            "prerender": [{ "where": { "and": [{ "href_matches": "/*" }, { "not": { "href_matches": "/projects/" } }] }, "eagerness": "moderate" }],
-            "prefetch": [{ "where": { "href_matches": "/projects/" }, "eagerness": "moderate" }]
         }
         </script>
 
